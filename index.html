@@ -10,12 +10,13 @@
 </head>
 
 <body>
+    
     <div class="navbar">
         <div class="navbar-left">
             <ul>
+                <li><a href="#" style="margin-right: 4px;">Profil</a><i class="fa fa-solid fa-user icons"></i></li>
                 <li><a href="#" style="margin-right: 4px;">Zenék</a><i class="fa fa-solid fa-music icons"></i></li>
                 <li><a href="#" style="margin-right: 4px;">Podcastok</a><i class="fa fa-solid fa-microphone icons"></i></li>
-                <li><a href="#" style="margin-right: 4px;">Profilkezelés</a><i class="fa fa-solid fa-user icons"></i></li>
             </ul>
         </div>
         <div class="search-container">
@@ -25,10 +26,9 @@
             </form>
           </div>
         <div class="navbar-right">
-            <button class="button">Regisztráció</button>
-            <button class="button" style="margin-right: 25px;">Bejelentkezés</button>
+            <button class="button" style="margin-right: 25px;">Regisztráció/Bejelentkezés</button>
             <label class="switch">
-                <input type="checkbox" id="darkModeToggle">
+                <input type="checkbox" id="darkModeToggle" onchange="darkmode()">
                 <div class="slider round"></div>
             </label>
         </div>
@@ -36,10 +36,22 @@
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <script>
         const darkModeToggle = document.getElementById("darkModeToggle");
+        const bodyElement = document.body;
+
+        // Ellenőrzi, hogy a felhasználó rendszere támogatja-e a prefers-color-scheme lekérdezést
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            bodyElement.classList.add('dark-mode');
+            darkModeToggle.checked = true;
+        } else {
+            bodyElement.classList.add('light-mode');
+        }
 
         darkModeToggle.addEventListener("change", () => {
-            document.body.classList.toggle("dark-mode", darkModeToggle.checked);
+            bodyElement.classList.toggle("dark-mode", darkModeToggle.checked);
+            bodyElement.classList.toggle("light-mode", !darkModeToggle.checked);
         });
+
+
     </script>
 </body>
 
