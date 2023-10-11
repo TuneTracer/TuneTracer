@@ -29,18 +29,32 @@ body {
     background-color: white;
 }
 
+@keyframes toWhite {
+    from {background-image: url("darkmode.jpg");}
+    to {background-image: url("background.jpg");}
+}
+
+@keyframes toBlack {
+    from {background-image: url("background.jpg");}
+    to {background-image: url("darkmode.jpg");}
+}
+
 body.dark-mode  {
-    filter: invert(100%);
-    -webkit-filter: invert(100%);
     background-image: url("darkmode.jpg");
+    animation-name: toBlack;
+    animation-duration: 0.5s;
+    animation-iteration-count: 1;
 }
 
 body.light-mode  {
     background-image: url("background.jpg");
     background-color: black;
+    animation-name: toWhite;
+    animation-duration: 0.5s;
+    animation-iteration-count: 1;
 }
 
-.navbar {
+.navbar{
     background-color: rgba(255, 255, 255, 0.25);
     backdrop-filter: blur(8px);
     border: 2px solid rgba(0, 0, 0, 0.4);
@@ -48,10 +62,68 @@ body.light-mode  {
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
     padding: 10px 20px;
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
     width: 80%;
 }
+
+@keyframes toBlackNav {
+    from {filter: invert(0%);}
+    to {filter: invert(100%);}
+}
+
+@keyframes toWhiteNav {
+    from {filter: invert(100%);}
+    to {filter: invert(0%);}
+}
+
+.dark-mode #navbar{
+    animation-name: toBlackNav;
+    animation-duration: 0.5s;
+    animation-iteration-count: 1;
+    filter: invert(100%);
+}
+
+.light-mode #navbar{
+    animation-name: toWhiteNav;
+    animation-duration: 0.5s;
+    animation-iteration-count: 1;
+    filter: invert(0%);
+}
+
+#navbar{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+@media (max-width: 800px) {
+    #navbar{
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        padding: 0px;
+        margin: 0px;
+        width: 80%;
+    }
+    .navbar {
+        background-color: rgba(255, 255, 255, 0.25);
+        backdrop-filter: blur(8px);
+        border: 2px solid rgba(0, 0, 0, 0.4);
+        border-radius: 7px;
+        box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+        padding: 10px 20px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        width: 80%;
+    }
+ }
 
 .navbar-left {
     display: flex;
