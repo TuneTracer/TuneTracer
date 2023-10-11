@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="hu">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Zenealkalmazás</title>
+</head>
+
+<body>
+    <div class="navbar">
+        <div class="navbar-left">
+            <ul>
+                <li><a href="#" style="margin-right: 4px;">Zenék</a><i class="fa fa-solid fa-music icons"></i></li>
+                <li><a href="#" style="margin-right: 4px;">Podcastok</a><i class="fa fa-solid fa-microphone icons"></i></li>
+                <li><a href="#" style="margin-right: 4px;">Profilkezelés</a><i class="fa fa-solid fa-user icons"></i></li>
+            </ul>
+        </div>
+        <div class="search-container">
+            <form action="#">
+              <input type="text" class="search-bar" placeholder="Keresés..">
+              <button type="submit"><i class="fa fa-search search-icon"></i></button>
+            </form>
+          </div>
+        <div class="navbar-right">
+            <button class="button">Regisztráció</button>
+            <button class="button" style="margin-right: 25px;">Bejelentkezés</button>
+            <label class="switch">
+                <input type="checkbox" id="darkModeToggle">
+                <div class="slider round"></div>
+            </label>
+        </div>
+    </div>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script>
+        const darkModeToggle = document.getElementById("darkModeToggle");
+
+        darkModeToggle.addEventListener("change", () => {
+            document.body.classList.toggle("dark-mode", darkModeToggle.checked);
+        });
+    </script>
+</body>
+
+</html>
