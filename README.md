@@ -105,8 +105,8 @@ The **TuneTracer** is a music player website that offers similar features to Spo
 ---
 ## ***Adatbázis:***
 
-![Tervrajz](Projektterv/adatbazis.png) 
+![Tervrajz](adatbazis.png) 
 
 ---
 ## ***Navbar:***
-![Tervrajz](Projektterv/navbar.png) 
+![Tervrajz](navbar.png) 
