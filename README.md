@@ -1,16 +1,4 @@
-<div class="center-text"> TuneTracer Projekt Leírás </div>
-
-<style>
-    body {
-      font-family: Arial, sans-serif;
-    }
-    .center-text {
-        text-align: center;
-        font-weight: bold;
-        font-size: 32px;
-    }
-</style>
-<br>
+# TuneTracer Projekt Leírás 
 
 ## **Projekt Általános leírása**
 
