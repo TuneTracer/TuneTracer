@@ -269,12 +269,14 @@ button{
     transition-duration: 0.4s;
     cursor: pointer;
     border-radius: 15px;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition: all 0.3s ease, color 0.3s ease;
 }
 
 .button:hover {
-    background-color: rgba(255, 255, 255, 0.4);
-    color: black;
+    background-color: #04825B; 
+    color: white;
+    transform: scale(1.05);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
 }
 
 .switch {
@@ -526,6 +528,14 @@ button{
     font-size: 1em;
     color: #fff;
     font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn:hover {
+    background-color: #04825B; 
+    transform: scale(1.05);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
 }
 
 .login-register {
