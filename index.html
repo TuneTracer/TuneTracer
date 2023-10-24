@@ -16,19 +16,28 @@
         <div id="navbar" style="padding: 0px;">
             <div class="navbar-left">
                 <ul>
-                    <li><a href="#" style="margin-right: 4px;">Profil</a><i class="fa fa-solid fa-user icons"></i></li>
-                    <li><a href="#" style="margin-right: 4px;">Zenék</a><i class="fa fa-solid fa-music icons"></i></li>
-                    <li><a href="#" style="margin-right: 4px;">Podcastok</a><i class="fa fa-solid fa-microphone icons"></i></li>
+                    <li><a href="javascript:void(0);" onclick="toggleProfilePage()">
+                        <span style="margin-right: 3px;">Profil</span>
+                        <i class="fa fa-solid fa-user"></i>
+                    </a></li>                                   
+                    <li><a href="#" style="display: flex; align-items: center; margin-right: 4px;">
+                        <span style="margin-right: 3px;">Zenék</span>
+                        <i class="fa fa-solid fa-music"></i>
+                    </a></li>
+                    <li><a href="#" style="display: flex; align-items: center; margin-right: 4px;">
+                        <span style="margin-right: 3px;">Podcastok</span>
+                        <i class="fa fa-solid fa-microphone"></i>
+                    </a></li>
                 </ul>
             </div>
             <div class="search-container">
-                <form action="#">
-                <input type="text" class="search-bar" placeholder="Keresés..">
-                <button type="submit"><i class="fa fa-search search-icon"></i></button>
+                <form action="#" class="from1">
+                    <input type="text" class="search-bar" placeholder="Keresés..">
+                    <button type="submit"><i class="fa fa-search search-icon"></i></button>
                 </form>
             </div>
             <div class="navbar-right">
-                <button class="button" style="margin-right: 25px;">Regisztráció/Bejelentkezés</button>
+                <button class="button" style="margin-right: 25px;">Bejelentkezés</button>
                 <label class="switch">
                     <input type="checkbox" id="darkModeToggle">
                     <div class="slider round"></div>
@@ -36,37 +45,109 @@
             </div>
         </div>
     </div>
+    <div id="profilePage" class="hidden">
+        <!-- Profile content goes here -->
+        
+    </div>
+    
+    <div class="wrapper">
+        <span class="icon-close"><ion-icon name="close"></ion-icon></span>
+
+        <div class="form-box login">
+              <h2>Bejelentkezés</h2>
+              <form action="#">
+                    <div class="input-box">
+                          <span class="icon"><ion-icon name="mail"></ion-icon></span>
+                          <input type="email" required>
+                          <label>Email</label>
+                    </div>
+                    <div class="input-box">
+                          <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
+                          <input type="password" required>
+                          <label>Jelszó</label>
+                    </div>
+                    <div class="remember">
+                          <label><input type="checkbox"></span>Emlékezz rám</label>
+                          <i><a href="#">Elfelejtetted a jelszavad?</a></i>
+                    </div>
+                    <button type="submit" class="btn">Bejelentkezés</button>
+                    <div class="login-register">
+                          <p>Nincs fiókod?<a href="#" class="register-link"> Regisztráció</a></p>
+                    </div>
+              </form>
+        </div>
+
+        <div class="form-box register">
+              <h2>Regisztráció</h2>
+              <form action="#">
+                    <div class="input-box">
+                          <span class="icon"><ion-icon name="person"></ion-icon></span>
+                          <input type="text" required>
+                          <label>Felhasználónév</label>
+                    </div>
+                    <div class="input-box">
+                          <span class="icon"><ion-icon name="mail"></ion-icon></span>
+                          <input type="email" required>
+                          <label>Email</label>
+                    </div>
+                    <div class="input-box">
+                          <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
+                          <input type="password" required>
+                          <label>Jelszó</label>
+                    </div>
+                    <div class="remember">
+                          <label><input type="checkbox">Elfogadok mindent</label>
+                    </div>
+                    <button type="submit" class="btn">Regisztráció</button>
+                    <div class="login-register">
+                          <p>Van már fiókod?<a href="#" class="login-link"> Bejelentkezés</a></p>
+                    </div>
+              </form>
+        </div>
+  </div>
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
     <script>
-        const darkModeToggle = document.getElementById("darkModeToggle");
-        const bodyElement = document.body;
+        document.addEventListener('DOMContentLoaded', function() {
+            const darkModeToggle = document.getElementById("darkModeToggle");
+            const bodyElement = document.body;
 
-        // Ellenőrzi, hogy a felhasználó rendszere támogatja-e a prefers-color-scheme lekérdezést
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            bodyElement.classList.add('dark-mode');
-            darkModeToggle.checked = true;
-        } else {
-            bodyElement.classList.add('light-mode');
-        }
+            // Ellenőrzi, hogy a felhasználó rendszere támogatja-e a prefers-color-scheme lekérdezést
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                bodyElement.classList.add('dark-mode');
+                darkModeToggle.checked = true;
+            } else {
+                bodyElement.classList.add('light-mode');
+                darkModeToggle.checked = false;
+            }
 
-        darkModeToggle.addEventListener("change", () => {
-            bodyElement.classList.toggle("dark-mode", darkModeToggle.checked);
-            bodyElement.classList.toggle("light-mode", !darkModeToggle.checked);
+            darkModeToggle.addEventListener("change", () => {
+                bodyElement.classList.toggle("dark-mode", darkModeToggle.checked);
+                bodyElement.classList.toggle("light-mode", !darkModeToggle.checked);
+            });
+
+            const wrapper = document.querySelector(".wrapper");
+            const loginLink = document.querySelector(".login-link");
+            const registerLink = document.querySelector(".register-link");
+            const btnPopup = document.querySelector(".button");
+            const iconClose = document.querySelector(".icon-close");
+
+
+            registerLink.addEventListener('click', ()=> {
+                  wrapper.classList.add('active');
+            });
+            loginLink.addEventListener('click', ()=> {
+                  wrapper.classList.remove('active');
+            });
+            btnPopup.addEventListener('click', ()=> {
+                  wrapper.classList.add('active-popup');
+            });
+            iconClose.addEventListener('click', ()=> {
+                  wrapper.classList.remove('active-popup');
+            });
+            
         });
-        const navbarElement = document.getElementById("navbar");
-
-        // Ellenőrzi, hogy a felhasználó rendszere támogatja-e a prefers-color-scheme lekérdezést
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            navbarElement.classList.add('dark-mode');
-            darkModeToggle.checked = true;
-        } else {
-            navbarElement.classList.add('light-mode');
-        }
-
-        darkModeToggle.addEventListener("change", () => {
-            navbarElement.classList.toggle("dark-mode", darkModeToggle.checked);
-            navbarElement.classList.toggle("light-mode", !darkModeToggle.checked);
-        });
-
     </script>
 </body>
 

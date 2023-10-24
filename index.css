@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap');
+
 @media screen and (max-width: 600px) {
     .topnav .search-container {
         float: none;
@@ -13,6 +15,13 @@
     .topnav input[type=text] {
         border: 1px solid #ccc;  
     }
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
 }
 
 body {
@@ -55,6 +64,9 @@ body.light-mode  {
     animation-iteration-count: 1;
 }
 
+/* ----------------------------------------------------------------------- */
+
+/* Navbar és menü */
 .navbar{
     background-color: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(5px);
@@ -149,6 +161,7 @@ li {
     text-decoration: none;
     color: black;
     position: relative;
+    transition: color 0.3s ease;
 }
 
 .navbar-left a:hover, .icons:hover {
@@ -188,7 +201,7 @@ button{
     cursor: pointer;
 }
 
-form{
+.search-container form {
     position: relative;
     transition: all 1s;
     width: 300px;
@@ -200,7 +213,7 @@ form{
     padding: 5px;
 }
 
-input{
+.search-bar, #darkModeToggle {
     position: absolute;
     top: 0;
     left: 0;
@@ -229,11 +242,11 @@ input{
     font-size: 1.2em; 
 }
 
-form:hover input{
+.search-container form:hover input{
     display: block;
 }
 
-form:hover .fa{
+.search-container form:hover .fa{
     background: #07051a;
     color: white;
 }
@@ -301,11 +314,11 @@ form:hover .fa{
     transition: .4s;
 }
 
-input:checked + .slider {
+#darkModeToggle:checked + .slider {
     background-color: #aaa;
 }
 
-input:checked + .slider:before {
+#darkModeToggle:checked + .slider:before {
     -webkit-transform: translateX(26px);
     -ms-transform: translateX(26px);
     transform: translateX(26px);
@@ -318,3 +331,228 @@ input:checked + .slider:before {
 .slider.round:before {
     border-radius: 50%;
 }
+
+/* ----------------------------------------------------------------------- */
+
+/* Bejelentkezés és Regisztráció */
+
+.wrapper {
+    display: flex;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    height: 440px;
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center; 
+    overflow: hidden; 
+    transform: scale(0);
+    transition: transform 0.5s ease, height 0.2s ease;
+}
+
+.wrapper.active-popup {
+    transform: scale(1);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.wrapper.active {
+    height: 520px;
+}
+
+.wrapper .form-box {
+    width: 100%;
+    padding: 40px;
+}
+
+.wrapper.active .form-box.active {
+    transition: none;
+    transform: translateX(-400px);
+}
+
+.wrapper .form-box.login {
+    transition: transform 0.18s ease;
+    transform: translateX(0);
+}
+
+.wrapper .form-box.register {
+    position: absolute;
+    transition: transform 0.18s ease;
+    transform: translateX(400px);
+}
+
+.wrapper.active .form-box.login {
+    transform: translateX(-400px);
+}
+
+.wrapper.active .form-box.register {
+    transform: translateX(0%);
+}
+
+
+.wrapper .icon-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 45px;
+    height: 45px;
+    background: #04AA6D;
+    font-size: 2em;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom-left-radius: 20px;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.form-box h2 {
+    font-size: 2em;
+    color: #04AA6D;
+    text-align: center;
+}
+
+.input-box {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    border-bottom: 2px solid #04AA6D;
+    margin: 30px 0;
+}
+
+.input-box label {
+    position: absolute;
+    top: 50%;
+    left: 5px;
+    transform: translateY(-50%);
+    font-size: 1em;
+    color: #04AA6D;
+    font-weight: 500;
+    pointer-events: none;
+    transition: 0.5s;
+}
+
+.input-box input:focus~label,
+.input-box input:valid~label{
+    top: -5px;
+}
+
+.input-box input {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    font: 1em sans-serif;
+    color: #04AA6D;
+    font-weight: 600;
+    padding: 0 35px 0 5px;
+}
+
+.input-box .icon {
+    position: absolute;
+    right: 8px;
+    font-size: 1.2em;
+    color: #04AA6D;
+    line-height: 57px;
+}
+
+.remember {
+    font-size: 0.9em;
+    color: #04AA6D;
+    font-weight: 500;
+    margin: 10px 0; 
+    justify-content: space-between;
+    display: flex;
+    align-items: center;
+}
+
+.remember input[type="checkbox"] {
+    margin-right: 10px;
+    appearance: none; 
+    width: 20px; 
+    height: 20px; 
+    border: 2px solid #04AA6D; 
+    border-radius: 5px; 
+    outline: none; 
+    cursor: pointer;
+}
+
+.remember input[type="checkbox"]:checked {
+    background-color: #04AA6D; 
+    border-color: #04AA6D; 
+}
+
+.remember input[type="checkbox"]:not(:checked):hover {
+    background-color: rgba(4, 170, 109, 0.1); 
+}
+
+.remember label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.remember label input {
+    accent-color: #04AA6D;
+    margin-right: 3px;
+}
+
+.remember a {
+    color: #04AA6D;
+    text-decoration: none;
+}
+
+.remember a:hover {
+    text-decoration: underline;
+}
+
+.btn {
+    width: 100%;
+    height: 45px;
+    background: #04AA6D;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1em;
+    color: #fff;
+    font-weight: 500;
+}
+
+.login-register {
+    font-size: 0.9em;
+    color: #04AA6D;
+    text-align: center;
+    font-weight: 500;
+    margin: 25px 0 10px;
+}
+
+.login-register p a {
+    color: #04AA6D;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.login-register p a:hover {
+    text-decoration: underline;
+}
+
+.dark-mode .icon-close,
+.dark-mode .form-box h2,
+.dark-mode .input-box,
+.dark-mode .remember,
+.dark-mode .login-register,
+.dark-mode .btn {
+    filter: invert(100%);
+}
+
+/* ----------------------------------------------------------------------- */
