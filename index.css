@@ -70,10 +70,6 @@ body.light-mode  {
 .navbar{
     background-color: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(5px);
-    -webkit-backface-visibility: hidden;
-    -moz-backface-visibility: hidden;
-    -webkit-transform: translate3d(0, 0, 0);
-    -moz-transform: translate3d(0, 0, 0);
     border: 2px solid rgba(0, 0, 0, 0.4);
     border-radius: 20px;
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
@@ -130,10 +126,6 @@ body.light-mode  {
     .navbar {
         background-color: rgba(255, 255, 255, 0.25);
         backdrop-filter: blur(8px);
-        -webkit-backface-visibility: hidden;
-        -moz-backface-visibility: hidden;
-        -webkit-transform: translate3d(0, 0, 0);
-        -moz-transform: translate3d(0, 0, 0);
         border: 2px solid rgba(0, 0, 0, 0.4);
         border-radius: 7px;
         box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
@@ -358,10 +350,6 @@ button{
     border: 2px solid rgba(255, 255, 255, 0.5);
     border-radius: 20px;
     backdrop-filter: blur(10px);
-    -webkit-backface-visibility: hidden;
-    -moz-backface-visibility: hidden;
-    -webkit-transform: translate3d(0, 0, 0);
-    -moz-transform: translate3d(0, 0, 0);
     box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
     justify-content: center;
     align-items: center; 
