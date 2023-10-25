@@ -37,6 +37,7 @@ body {
     background-image: url("background.jpg");
     background-repeat: repeat;
     background-color: white;
+    overflow: hidden;
 }
 
 @keyframes toWhite {
