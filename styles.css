@@ -1,0 +1,69 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap");
+body {
+  margin: 0;
+  background: black;
+}
+
+* {
+  font-family: Poppins;
+  color: white;
+}
+
+nav {
+  display: flex;
+  justify-content: center;
+}
+nav .nav-content {
+  width: 80%;
+  max-width: 1920px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  margin: 1rem;
+}
+nav .nav-content .nav-links a {
+  font-size: 1.2rem;
+  text-decoration: none;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+}
+nav .nav-content .nav-links a img {
+  height: 0.9rem;
+}
+nav .nav-content .search-bar {
+  background: linear-gradient(97deg, #F59134 0%, #FF39C8 100%);
+  padding: 5px;
+  border-radius: 500px;
+  display: flex;
+  align-items: center;
+}
+nav .nav-content .search-bar input {
+  border-radius: 500px;
+  border: solid transparent;
+  background-color: rgba(0, 0, 0, 0.664);
+  text-indent: 10px;
+}
+nav .nav-content .search-bar input::-moz-placeholder {
+  color: white;
+}
+nav .nav-content .search-bar input::placeholder {
+  color: white;
+}
+nav .nav-content .search-bar img {
+  height: 1.2rem;
+}
+nav .nav-content #sign-in {
+  background: linear-gradient(97deg, #F59134 0%, #FF39C8 100%);
+  border-radius: 500px;
+  border: none;
+  padding: 0.2rem 1rem 0.2rem 1rem;
+  font-size: 1.2rem;
+}
+
+@media only screen and (min-width: 764px) {
+  .nav-content #sign-in {
+    margin-right: 12%;
+  }
+}/*# sourceMappingURL=styles.css.map */
