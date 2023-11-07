@@ -34,69 +34,45 @@ body {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    background-image: url("imgs/background.jpg");
+    background-image: url("background.jpg");
     background-repeat: repeat;
-    background-color: black;
+    background-color: white;
 }
 
 @keyframes toWhite {
-    from {background-image: url("imgs/darkmode.jpg");}
-    to {background-image: url("imgs/background.jpg");}
+    from {background-image: url("darkmode.jpg");}
+    to {background-image: url("background.jpg");}
 }
 
 @keyframes toBlack {
-    from {background-image: url("imgs/background.jpg");}
-    to {background-image: url("imgs/darkmode.jpg");}
+    from {background-image: url("background.jpg");}
+    to {background-image: url("darkmode.jpg");}
 }
 
 body.dark-mode  {
-    background-image: url("imgs/darkmode.jpg");
+    background-image: url("darkmode.jpg");
     animation-name: toBlack;
     animation-duration: 0.5s;
     animation-iteration-count: 1;
 }
 
 body.light-mode  {
-    background-image: url("imgs/background.jpg");
+    background-image: url("background.jpg");
     background-color: black;
     animation-name: toWhite;
     animation-duration: 0.5s;
     animation-iteration-count: 1;
 }
 
-/* ----------------------------------------------------------------------- */
-
-/* Zene itemek */
-
-.song-list {
-    padding-top: 20px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    width: 80%;
-}
-
-.song-card {
-    margin-top: 20px;
-    width: 160px;
-    height: 80px;
-    background: transparent;
-    border: 2px solid rgba(255, 255, 255, 0.5);
-    border-radius: 20px;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
-}
-
-/* ----------------------------------------------------------------------- */
+/* --------------------------------------------------------------------------------------------------------------------------------------------- */
 
 /* Navbar és menü */
 .navbar{
-    background: transparent;
-    border: 2px solid rgba(255, 255, 255, 0.5);
+    background-color: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(5px);
+    border: 2px solid rgba(0, 0, 0, 0.4);
     border-radius: 20px;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
     padding: 10px 20px;
     display: flex;
     flex-wrap: wrap;
@@ -181,14 +157,14 @@ li {
     margin: 0 15px;
 }
 
-.navbar-left a, .icons {
+.navbar-left a, span, .icons {
     text-decoration: none;
-    color: black;
+    color: #343E40;
     position: relative;
     transition: color 0.3s ease;
 }
 
-.navbar-left a:hover, .icons:hover {
+.navbar-left a:hover, span:hover, .icons:hover {
     color: #04AA6D;
 }
 
@@ -358,7 +334,7 @@ button{
     border-radius: 50%;
 }
 
-/* ----------------------------------------------------------------------- */
+/* --------------------------------------------------------------------------------------------------------------------------------------------- */
 
 /* Bejelentkezés és Regisztráció */
 
@@ -373,13 +349,13 @@ button{
     background: transparent;
     border: 2px solid rgba(255, 255, 255, 0.5);
     border-radius: 20px;
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(15px);
     box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
     justify-content: center;
     align-items: center; 
     overflow: hidden; 
     transform: scale(0);
-    transition: transform 0.5s ease, height 0.2s ease;
+    transition: transform 0.5s;
 }
 
 .wrapper.active-popup {
@@ -589,4 +565,184 @@ button{
     filter: invert(100%);
 }
 
-/* ----------------------------------------------------------------------- */
+/* --------------------------------------------------------------------------------------------------------------------------------------------- */
+
+/* Zenelejátszó */
+.player{
+    margin-top: 25px;
+    height: 80vh;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    transform: scale(0);
+    transition: transform 0.5s;
+}
+
+.player.active-popup {
+    transform: scale(1);
+}
+
+.wrapper-player {
+    border: 1px solid transparent;
+    padding: 25px;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(20px);
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+}
+    
+.details {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+    
+.track-art {
+    margin: 25px;
+    height: 170px;
+    width: 170px;
+    border:2px solid #04AA6D;
+    background-size: cover;
+    background-position: center;
+    border-radius: 50%;
+    -moz-box-shadow: 0px 6px 5px #CBC1BF;
+    -webkit-box-shadow: 0px 6px 5px #CBC1BF;
+    box-shadow: 0px 6px 5px #CBC1BF;
+    -moz-border-radius:190px;
+    -webkit-border-radius:190px;
+    border-radius:190px;
+}
+    
+.now-playing {
+    font-size: 1rem;
+    color: #343E40;
+}
+    
+.track-name {
+    font-size: 2.5rem;
+    color: #343E40;
+}
+    
+.track-artist {
+    margin-top: 5px;
+    font-size: 1.5rem;
+    color: #343E40;
+}
+    
+.buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 30px;
+}
+.active{
+    color: black;
+}
+    
+.repeat-track,
+.random-track,
+.playpause-track,
+.prev-track,
+.next-track {
+    padding: 17px;
+    opacity: 0.8;
+    transition: opacity .2s;
+    color: #04AA6D;
+    cursor: pointer;
+}
+
+.playpause-track {
+    font-size: 50px;
+}
+    
+.repeat-track:hover,
+.random-track:hover,
+.playpause-track:hover,
+.prev-track:hover,
+.next-track:hover {
+    opacity: 2.0;
+}
+    
+.slider_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+    
+.seek_slider, .volume_slider {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    height: 5px;
+    background: #04AA6D;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+}
+    
+.seek_slider::-webkit-slider-thumb,
+.volume_slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    background: white;
+    border: 3px solid #04825B;
+    cursor: grab;
+    border-radius: 100%;
+}
+    
+.seek_slider:hover,
+.volume_slider:hover {
+    opacity: 1.0;
+}
+    
+.seek_slider {
+    width: 60%;
+}
+    
+.volume_slider {
+    width: 30%;
+}
+    
+.current-time,
+.total-duration {
+    padding: 10px;
+    color: #343E40;
+}
+    
+i.fa-volume-down,
+i.fa-volume-up {
+    padding: 10px;
+    color: #343E40;
+}
+    
+.randomActive{
+    color: black;
+}
+.rotate {
+    animation: rotation 8s infinite linear;
+}
+@keyframes rotation {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(359deg);
+    }
+}
+
+.dark-mode .repeat-track,
+.dark-mode .random-track,
+.dark-mode .playpause-track, 
+.dark-mode .prev-track, 
+.dark-mode .next-track,
+.dark-mode .track-art,
+.dark-mode .now-playing,
+.dark-mode .track-name,
+.dark-mode .track-artist,
+.dark-mode .slider_container {
+    filter: invert(100%);
+}

@@ -9,11 +9,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Tune Tracer</title>
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/1bf196f23e.js" crossorigin="anonymous"></script>
 </head>
-
 <body>
-    
+    <!------------------------------------------------------------------------------------------------------------------------------------------------->
+
+    <!-- Navbat és menü -->
     <div class="navbar">
         <div id="navbar" style="padding: 0px;">
             <div class="navbar-left">
@@ -22,7 +23,7 @@
                         <span style="margin-right: 3px;">Profil</span>
                         <i class="fa fa-solid fa-user"></i>
                     </a></li>                                   
-                    <li><a href="#" style="display: flex; align-items: center; margin-right: 4px;">
+                    <li id="zenek"><a href="#" style="display: flex; align-items: center; margin-right: 4px;">
                         <span style="margin-right: 3px;">Zenék</span>
                         <i class="fa fa-solid fa-music"></i>
                     </a></li>
@@ -51,6 +52,8 @@
         <!-- Profile content goes here -->
         
     </div>
+
+    <!------------------------------------------------------------------------------------------------------------------------------------------------->
     
     <!-- Bejelentkezés és Regisztráció -->
     <div class="wrapper">
@@ -109,6 +112,8 @@
         </div>
     </div>
 
+    <!------------------------------------------------------------------------------------------------------------------------------------------------->
+
     <!-- Zenelejátszó -->
     <div class="player">
         <div class="wrapper-player">
@@ -116,7 +121,7 @@
                 <div class="now-playing">PLAYING x OF y</div>
                 <div class="track-art"></div>
                 <div class="track-name">Track Name</div>
-                <div class="track-picture">Track Picture</div>
+                <div class="track-artist">Track Artist</div>
             </div>
 
             <div class="slider_container">
@@ -139,7 +144,7 @@
                     <i class="fa fa-step-backward fa-2x"></i>
                 </div>
                 <div class="playpause-track">
-                    <i class="fa fa-play-circle fa-5x"></i>
+                    <i class="fa-regular fa-circle-play"></i>
                 </div>
                 <div class="next-track">
                     <i class="fa fa-step-forward fa-2x"></i>
@@ -163,13 +168,14 @@
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
+    <!------------------------------------------------------------------------------------------------------------------------------------------------->
+
     <!-- Script -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const darkModeToggle = document.getElementById("darkModeToggle");
-            const bodyElement = document.body;
+            var darkModeToggle = document.getElementById("darkModeToggle");
+            var bodyElement = document.body;
 
-            // Ellenőrzi, hogy a felhasználó rendszere támogatja-e a prefers-color-scheme lekérdezést
             if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
                 bodyElement.classList.add('dark-mode');
                 darkModeToggle.checked = true;
@@ -183,28 +189,34 @@
                 bodyElement.classList.toggle("light-mode", !darkModeToggle.checked);
             });
 
-            const wrapper = document.querySelector(".wrapper");
-            const loginLink = document.querySelector(".login-link");
-            const registerLink = document.querySelector(".register-link");
-            const btnPopup = document.querySelector(".button");
-            const iconClose = document.querySelector(".icon-close");
+            var wrapper = document.querySelector(".wrapper");
+            var loginLink = document.querySelector(".login-link");
+            var registerLink = document.querySelector(".register-link");
+            var btnPopup = document.querySelector(".button");
+            var iconClose = document.querySelector(".icon-close");
+            var zenek = document.getElementById("zenek");
+            var player = document.querySelector(".player");
 
+            zenek.addEventListener("click", ()=> {
+                player.classList.add('active-popup');
+                wrapper.classList.remove('active-popup');
+            });
 
             registerLink.addEventListener('click', ()=> {
-                  wrapper.classList.add('active');
+                wrapper.classList.add('active');
             });
             loginLink.addEventListener('click', ()=> {
-                  wrapper.classList.remove('active');
+                wrapper.classList.remove('active');
             });
             btnPopup.addEventListener('click', ()=> {
-                  wrapper.classList.add('active-popup');
+                wrapper.classList.add('active-popup');
+                player.classList.remove('active-popup');
             });
             iconClose.addEventListener('click', ()=> {
-                  wrapper.classList.remove('active-popup');
+                wrapper.classList.remove('active-popup');
             });
             
         });
     </script>
 </body>
-
 </html>
