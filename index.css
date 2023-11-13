@@ -34,30 +34,30 @@ body {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    background-image: url("background.jpg");
+    background-image: url("imgs/background.jpg");
     background-repeat: repeat;
     background-color: white;
 }
 
 @keyframes toWhite {
-    from {background-image: url("darkmode.jpg");}
-    to {background-image: url("background.jpg");}
+    from {background-image: url("imgs/darkmode.jpg");}
+    to {background-image: url("imgs/background.jpg");}
 }
 
 @keyframes toBlack {
-    from {background-image: url("background.jpg");}
-    to {background-image: url("darkmode.jpg");}
+    from {background-image: url("imgs/background.jpg");}
+    to {background-image: url("imgs/darkmode.jpg");}
 }
 
 body.dark-mode  {
-    background-image: url("darkmode.jpg");
+    background-image: url("imgs/darkmode.jpg");
     animation-name: toBlack;
     animation-duration: 0.5s;
     animation-iteration-count: 1;
 }
 
 body.light-mode  {
-    background-image: url("background.jpg");
+    background-image: url("imgs/background.jpg");
     background-color: black;
     animation-name: toWhite;
     animation-duration: 0.5s;
@@ -65,6 +65,18 @@ body.light-mode  {
 }
 
 /* --------------------------------------------------------------------------------------------------------------------------------------------- */
+
+footer {
+    background-color: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(5px);
+    border: 2px solid rgba(0, 0, 0, 0.4);
+    border-radius: 20px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+    position: absolute; 
+    bottom: 0; 
+    left: 50%; 
+    z-index: 10;
+}
 
 /* Navbar és menü */
 .navbar{
