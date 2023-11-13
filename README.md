@@ -93,7 +93,7 @@ The **TuneTracer** is a music player website that offers similar features to Spo
 ---
 ## ***Adatbázis:***
 
-![Tervrajz](adatbazis.png) 
+![Tervrajz](docs/adatbazis.png) 
 ### Adatbazis fixek
  - A Subscriptions tablat at kell irni tobb az egy hez kapcsolatra
  - UserID-t at kell rakni a PlaylistNames tablaba hogy atlathatobb es hasznalhatobb legyen az adatbazis
