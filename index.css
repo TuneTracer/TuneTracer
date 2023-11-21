@@ -42,11 +42,11 @@ body {
 
 @keyframes toWhite {
     from {background: radial-gradient(ellipse at top, #000000 0%,#7b2a94 50%, #000000 100%);}
-    to {background: radial-gradient(ellipse at top, #000000 0%,#0fffff 50%, #000000 100%);}
+    to {background: radial-gradient(ellipse at top, #000000 0%,#034a4e 50%, #000000 100%);}
 }
 
 @keyframes toBlack {
-    from {background: radial-gradient(ellipse at top, #000000 0%,#0fffff 50%, #000000 100%);}
+    from {background: radial-gradient(ellipse at top, #000000 0%,#034a4e 50%, #000000 100%);}
     to {background: radial-gradient(ellipse at top, #000000 0%,#7b2a94 50%, #000000 100%);}
 }
 
@@ -58,7 +58,7 @@ body.dark-mode  {
 }
 
 body.light-mode  {
-    background: radial-gradient(ellipse at top, #000000 0%,#0fffff 50%, #000000 100%);
+    background: radial-gradient(ellipse at top, #000000 0%,#034a4e 50%, #000000 100%);
     background-color: black;
     animation-name: toWhite;
     animation-duration: 0.5s;
