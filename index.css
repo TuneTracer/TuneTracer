@@ -24,41 +24,40 @@
     font-family: 'Poppins', sans-serif;
 }
 
-
 body {
-    overflow: hidden;
-    min-height: 100vh;
     font-family: Arial, sans-serif;
-    background-repeat: no-repeat;
+    background-repeat:repeat;
     align-content: center;
     align-items: center;
     margin-left: auto;
     margin-right: auto;
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
     flex-wrap: wrap;
-    flex-direction: column;
+    background-image: url("imgs/background.jpg");
+    background-repeat: repeat;
+    background-color: white;
 }
 
 @keyframes toWhite {
-    from {background: radial-gradient(ellipse at top, #000000 0%,#7b2a94 50%, #000000 100%);}
-    to {background: radial-gradient(ellipse at top, #000000 0%,#034a4e 50%, #000000 100%);}
+    from {background-image: url("imgs/darkmode.jpg");}
+    to {background-image: url("imgs/background.jpg");}
 }
 
 @keyframes toBlack {
-    from {background: radial-gradient(ellipse at top, #000000 0%,#034a4e 50%, #000000 100%);}
-    to {background: radial-gradient(ellipse at top, #000000 0%,#7b2a94 50%, #000000 100%);}
+    from {background-image: url("imgs/background.jpg");}
+    to {background-image: url("imgs/darkmode.jpg");}
 }
 
 body.dark-mode  {
-    background: radial-gradient(ellipse at top, #000000 0%,#7b2a94 50%, #000000 100%);
+    background-image: url("imgs/darkmode.jpg");
     animation-name: toBlack;
     animation-duration: 0.5s;
     animation-iteration-count: 1;
 }
 
 body.light-mode  {
-    background: radial-gradient(ellipse at top, #000000 0%,#034a4e 50%, #000000 100%);
+    background-image: url("imgs/background.jpg");
     background-color: black;
     animation-name: toWhite;
     animation-duration: 0.5s;
@@ -68,27 +67,20 @@ body.light-mode  {
 /* --------------------------------------------------------------------------------------------------------------------------------------------- */
 
 footer {
-    color: #ffc7fc;
-    min-height: 50px;
-    width: 100%;
-    background-color: #ffc8fe30;
+    background-color: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(5px);
     border: 2px solid rgba(0, 0, 0, 0.4);
-    border-radius: 2px;
+    border-radius: 20px;
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
     position: absolute; 
     bottom: 0; 
+    left: 50%; 
     z-index: 10;
-    display: flex;
-    flex-wrap: wrap;
-    align-content: center;
-    justify-content: center;
-    align-items: center;
 }
 
 /* Navbar és menü */
 .navbar{
-    background-color: #ffc8fe30;
+    background-color: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(5px);
     border: 2px solid rgba(0, 0, 0, 0.4);
     border-radius: 20px;
@@ -179,7 +171,7 @@ li {
 
 .navbar-left a, span, .icons {
     text-decoration: none;
-    color: #ffffff;
+    color: #343E40;
     position: relative;
     transition: color 0.3s ease;
 }
@@ -637,18 +629,18 @@ button{
     
 .now-playing {
     font-size: 1rem;
-    color: #ffffff;
+    color: #343E40;
 }
     
 .track-name {
     font-size: 2.5rem;
-    color: #ffffff;
+    color: #343E40;
 }
     
 .track-artist {
     margin-top: 5px;
     font-size: 1.5rem;
-    color: #ffffff;
+    color: #343E40;
 }
     
 .buttons {
