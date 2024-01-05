@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credit Card Form</title>
+    <link rel="stylesheet" href="bankkartya.css">
+</head>
+<body>
+    <main class="container">
+        <section class="ui">
+            <div class="container-left">
+                <form id="credit-card">
+                    <div class="number-container">
+                        <label for="card-number">Kártyaszám</label>
+                        <input type="text" name="card-number" id="card-number" maxlength="19" placeholder="1234 1111 0000 2222" required>
+                    </div>
+                    <div class="name-container">
+                        <label for="name-text">Kártyatulajdonos</label>
+                        <input type="text" name="name-text" id="name-text" maxlength="30" placeholder="NICK GER" required>
+                    </div>
+                    <div class="infos-container">
+                        <div class="expiration-container">
+                            <label for="valid-thru-text">Lejárati Dátum</label>
+                            <input type="text" name="valid-thru-text" id="valid-thru-text" maxlength="5" placeholder="02/40" required>
+                        </div>
+                        <div class="cvv-container">
+                            <label for="cvv-text">CVV-kód</label>
+                            <input type="text" name="cvv-text" id="cvv-text" maxlength="4" placeholder="1234" required>
+                        </div>
+                    </div>
+                    <input type="submit" value="ADD" id="add">
+                </form>
+            </div>
+        </section>
+    </main>
+    <script>
+        const cardNumber = document.querySelector("#card-number");
+        const cardHolder = document.querySelector("#name-text");
+        const cardExpiration = document.querySelector("#valid-thru-text");
+        const cardCVV = document.querySelector("#cvv-text");
+
+        const cardNumberText = document.querySelector(".number-vl");
+        const cardHolderText = document.querySelector(".name-vl");
+        const cardExpirationText = document.querySelector(".expiration-vl");
+        const cardCVVText = document.querySelector(".cvv-vl");
+
+        cardNumber.addEventListener("input", formatCardNumber);
+        cardHolder.addEventListener("input", updateCardHolder);
+        cardExpiration.addEventListener("input", formatCardExpiration);
+        cardCVV.addEventListener("input", updateCardCVV);
+
+        function formatCardNumber() {
+            const formattedValue = cardNumber.value.replace(/\D/g, '').replace(/....(?!$)/g, '$& ');
+            cardNumber.value = formattedValue.trim();
+            cardNumberText.textContent = formattedValue || "1234 1111 0000 2222";
+        }
+
+        function updateCardHolder() {
+            cardHolderText.textContent = cardHolder.value.toUpperCase() || "NICK GER";
+        }
+
+        function formatCardExpiration() {
+            const formattedValue = cardExpiration.value.replace(/\D/g, '').replace(/..(?!$)/g, '$&/');
+            cardExpiration.value = formattedValue.trim();
+            cardExpirationText.textContent = formattedValue || "02/40";
+        }
+
+        function updateCardCVV() {
+            cardCVVText.textContent = cardCVV.value || "123";
+        }
+
+        document.querySelector("#credit-card").addEventListener("submit", function(e) {
+            e.preventDefault();
+            alert("Sikeres fizetés");
+            window.location.href = "index.html";
+        });
+    </script>
+</body>
+</html>

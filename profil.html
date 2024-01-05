@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Profile</title>
+        <script src="https://kit.fontawesome.com/12a41c30dd.js" crossorigin="anonymous"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" href="profil.css">
+    </head>
+    <body>
+
+        <!-- Header Section  -->
+
+        <header>
+            <nav class="navbar">
+                <div id="navbar" style="padding: 0px;">
+                    <div class="navbar-left">
+                        <ul>
+                            <li><a href="#" onclick="toggleProfilePage()">
+                                <span style="margin-right: 2px;">Profil</span>
+                                <i class="fas fa-user-circle"></i>
+                            </a></li>   
+                            <li id="zenek"><a href="index.html" style="display: flex; align-items: center; margin-right: 4px;">
+                                    <span style="margin-right: 3px;">Főmenü</span>
+                                    <i class="fa fa-solid fa-music"></i>
+                            </a></li>  
+                            <li id="zenek"><a href="playlist.html" style="display: flex; align-items: center; margin-right: 4px;">
+                                    <span style="margin-right: 3px;">Lejátszási Listáim</span>
+                                    <i class="fa-solid fa-bars"></i>
+                            </a></li>   
+                        </ul>
+                    </div>
+                    
+                    <div class="search-container trans-bg">
+                        <form action="#" class="from1">
+                            <input type="text" class="search-bar" placeholder="Keresés..">
+                            <button type="submit"><i class="fa fa-search search-icon"></i></button>
+                        </form>
+                    </div>
+                    <div class="navbar-right">
+                        <button class="button" style="margin-right: 25px;" onclick="bejelentkezes()">Bejelentkezés</button>
+                    </div>
+                </div>
+            </nav>
+        </header>       
+
+        <!-- Main Section  -->
+
+        <main>
+            <aside class="aside section-2" style="border-right: 5px solid rgb(17, 17, 102); padding: 12px;">
+                <div style="padding: 12px;">
+                    <h3 class="inline">Hasonló előadók</h3>
+                    <p class="inline sml-txt right" onclick="hidePlaylistItem(event)"><i class="toggleIcon fa-solid fa-minus" style="margin-left: 1em; font-size: 26px; cursor: pointer;"></i></p>
+                    <div class="playlist">
+                        <div class="playlist-item">
+                             <div class="playlist-content">
+                                 <div class="content-left">
+                                     <div style="margin-right: 4px;"><h2>01</h2></div>
+                                     <div class="coverer">
+                                         <img class="small-img inline-block" src="images/billie-eilish.jpg" alt=""> 
+                                     </div>
+                                     <div>
+                                         <h3>Billie Eilish</h3>
+                                     </div> 
+                                 </div>        
+                                 <div class="content-right">
+                                    <i class="fa-regular fa-heart" onclick="toggleHeart(this)"></i>
+                                 </div>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="border-top: 2px solid rgb(17, 17, 102); padding: 12px;">
+                    <h3 class="inline">Legutóbb játszott</h3>
+                    <p class="inline sml-txt right" onclick="hidePlaylistItem(event)"><i class="toggleIcon fa-solid fa-minus" style="margin-left: 1em; font-size: 26px; cursor: pointer;"></i></p>
+                    <div class="playlist">
+                        <div class="playlist-item">
+                             <div class="playlist-content">
+                                 <div class="content-left">
+                                     <div style="margin-right: 4px;"><h2>01</h2></div>
+                                     <div class="coverer">
+                                         <img class="small-img inline-block" src="images/End Game.jpg" alt=""> 
+                                     </div>
+                                     <div>
+                                         <div>End Game</div>
+                                         <p>Taylor Swift</p>
+                                     </div> 
+                                 </div>
+                                 
+                                 <div class="content-right">
+                                    <i class="fa-regular fa-heart" style="cursor: pointer;" onclick="toggleHeart(this)"></i>
+                                 </div>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+            <aside class="aside section-1">
+                <div class="subscription-info">
+                    <div class="subscription-details">
+                        <p>Megvásárolt előfizetés: Prémium</p>
+                        <p>Előfizetve: 6 hónapja</p>
+                    </div>
+                    <a href="subscription.html">Feliratkozás</a>
+                </div>
+
+                <h1 style="margin-top: 12px;">Legtöbbet hallgatott előadó</h1>
+                <div class="container">
+                    <img  class="big-img" src="images/End Game.jpg" alt="loading img">
+                    <div class="jumpbox-details">
+                        <div class="discriptive-part">
+                            <div class="right">115M Követő</div>
+                            <div class="author"><h1>Taylor Swift</h1></div>
+                            <p class="song-name">End Game</p>
+                            <p class="desc sml-txt"><b>Taylor Swift</b> is a Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate consequuntur adipisci et consectetur, similique magni officia ducimus voluptatibus laboriosam, provident ullam voluptas expedita dignissimos tenetur perspiciatis dolorem porro, animi vel amet. Numquam vel labore est id iste in facilis officiis sequi ab iusto soluta quae, alias quisquam sapiente sint. Dolor dolore cumque possimus eos necessitatibus harum alias, libero fugiat, quisquam qui, itaque tenetur cupiditate? Officiis error, nulla qui accusantium delectus consequatur, hic distinctio similique rerum odio molestiae amet quidem dolore!</p>
+                        </div>
+                        <div class="action-part">
+                            <div class="btns">
+                                <button>Összes Lejátszása</button>
+                                <button>Követés</button>
+                            </div>
+                            <p class="sml-txt">85 Tracks | 30 Album</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="playlist-main">
+                    <h1>Hasonló zenék</h1>
+                    <div class="playlist-item">
+                         <div class="playlist-content">
+                             <div class="content-left">
+                                 <div style="margin-right: 4px;"><h2>01</h2></div>
+                                 <div class="coverer">
+                                     <img class="small-img inline-block" src="images/End Game.jpg" alt=""> 
+                                 </div>
+                                 <div>
+                                     <div>End Game</div>
+                                     <p>Taylor Swift</p>
+                                 </div> 
+                             </div>
+                             
+                            <div class="content-right side-margin-12px">
+                                <i class="fa-regular fa-heart" onclick="toggleHeart(this)"></i>
+                                <i class="fa-solid fa-plus"></i>
+                            </div>
+                         </div>
+                    </div>
+                </div>
+                 
+            </aside>    
+        </main>
+
+        <footer>
+            <div class="play-song-info trans-bg">
+                <div class="con-left trans-bg">
+                    <div class="footer-img">
+                        <img class="small-img inline-block" src="images/End Game.jpg" alt=""> 
+                    </div>
+                    <div class="trans-bg">
+                        <div class="font-mid trans-bg">End Game</div>
+                        <p class="trans-bg">Taylor Swift</p>
+                    </div> 
+                </div>    
+                <div class="con-right trans-bg side-margin-4px">
+                    <i class="fa-solid fa-ban" style="cursor: pointer;"></i>
+                    <div class="heartIcon"><i class="fa-regular fa-heart" onclick="toggleHeart(this)"></i></div>
+                </div>
+            </div>
+
+            <div class="player trans-bg">
+                <div class="buttons">
+                    <div class="random-track">
+                        <i class="fa-solid fa-shuffle" title="random"></i>
+                    </div>
+                    <div class="prev-track">
+                        <i class="fa-solid fa-backward-step"></i>
+                    </div>
+                    <div class="playpause-track">
+                        <i class="fa-solid fa-play" onclick="handlePlay(this)"></i>
+                    </div>
+                    <div class="next-track">
+                        <i class="fa-solid fa-forward-step"></i>
+                    </div>
+                    <div class="repeat-track">
+                        <i class="fa-solid fa-arrow-rotate-right" title="repeat"></i>
+                    </div>
+                </div>
+                <div class="slider_container">
+                    <div class="current-time">00:00</div>
+                    <input type="range" min="1" max="100" value="0" class="seek_slider">
+                    <div class="total-duration">00:00</div>
+                </div>
+            </div>
+            <div class="extras trans-bg">
+                <div class="slider_container">
+                    <i class="fa fa-volume-down"></i>
+                    <input type="range" min="1" max="100" value="99" class="volume_slider">
+                    <i class="fa fa-volume-up"></i>
+                </div>
+                <div></div>
+            </div>
+        </footer>
+    </body>
+
+    <script>
+        function bejelentkezes()
+        {
+            window.location.href = "regbej.html";
+        }
+
+        function hidePlaylistItem(event) {
+            var clickedElement = event.target;
+            
+            if (clickedElement.classList.contains("toggleIcon")) {
+                var playlistItem = clickedElement.parentElement.nextElementSibling;
+                var icon = clickedElement;
+
+                if (icon.classList.contains("fa-minus")) {
+                    icon.classList.remove("fa-minus");
+                    icon.classList.add("fa-plus");
+                    playlistItem.style.display = "none";
+                } else {
+                    icon.classList.remove("fa-plus");
+                    icon.classList.add("fa-minus");
+                    playlistItem.style.display = "block";
+                }
+            }
+        }
+
+        function toggleHeart(event) {
+            if (event.classList.contains("fa-regular")) {
+                event.classList.remove("fa-regular");
+                event.classList.add("fa-solid");
+            } else {
+                event.classList.remove("fa-solid");
+                event.classList.add("fa-regular");
+            }
+        } 
+
+        function handlePlay(event) {
+            if (event.classList.contains("fa-play")) {
+                event.classList.remove("fa-play");
+                event.classList.add("fa-pause");
+            } else {
+                event.classList.remove("fa-pause");
+                event.classList.add("fa-play");
+            }
+        }
+    </script>
+</html>

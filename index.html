@@ -1,225 +1,283 @@
 <!DOCTYPE html>
-<html lang="hu">
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>TuneTracer</title>
+        <script src="https://kit.fontawesome.com/12a41c30dd.js" crossorigin="anonymous"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" href="style.css">  
+    </head>
+    <body>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="index.css">
-    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">  
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <title>Tune Tracer</title>
-    <script src="https://kit.fontawesome.com/1bf196f23e.js" crossorigin="anonymous"></script>
-</head>
-<body>
-    <!------------------------------------------------------------------------------------------------------------------------------------------------->
-
-    <!-- Navbat és menü -->
-    <nav class="navbar">
-        <div id="navbar" style="padding: 0px;">
-            <div class="navbar-left">
-                <ul>
-                    <li><a href="javascript:void(0);" onclick="toggleProfilePage()">
-                        <span style="margin-right: 3px;">Profil</span>
-                        <i class="fa fa-solid fa-user"></i>
-                    </a></li>                                   
-                    <li id="zenek"><a href="#" style="display: flex; align-items: center; margin-right: 4px;">
-                        <span style="margin-right: 3px;">Zenék</span>
-                        <i class="fa fa-solid fa-music"></i>
-                    </a></li>
-                    <li><a href="#" style="display: flex; align-items: center; margin-right: 4px;">
-                        <span style="margin-right: 3px;">Podcastok</span>
-                        <i class="fa fa-solid fa-microphone"></i>
-                    </a></li>
-                </ul>
-            </div>
-            <div class="search-container">
-                <form action="#" class="from1">
-                    <input type="text" class="search-bar" placeholder="Keresés..">
-                    <button type="submit"><i class="fa fa-search search-icon"></i></button>
-                </form>
-            </div>
-            <div class="navbar-right">
-                <button class="button" style="margin-right: 25px;">Bejelentkezés</button>
-                <label class="switch">
-                    <input type="checkbox" id="darkModeToggle">
-                    <div class="slider round"></div>
-                </label>
-            </div>
-        </div>
-    </nav>
-    <div id="profilePage" class="hidden">
-        <!-- Profile content goes here -->
-        
-    </div>
-
-    <!------------------------------------------------------------------------------------------------------------------------------------------------->
+        <!-- Header Section  -->
+        <header>
+            <nav class="navbar">
+                <div id="navbar" style="padding: 0px;">
+                    <div class="navbar-left">
+                        <ul>  
+                            <li><a href="profil.html" onclick="toggleProfilePage()">
+                                <span style="margin-right: 2px;">Profil</span>
+                                <i class="fas fa-user-circle"></i>
+                            </a></li>   
+                            <li id="zenek"><a href="#" style="display: flex; align-items: center; margin-right: 4px;">
+                                <span style="margin-right: 3px;">Főmenü</span>
+                                <i class="fa fa-solid fa-music"></i>
+                            </a></li> 
+                            <li id="zenek"><a href="playlist.html" style="display: flex; align-items: center; margin-right: 4px;">
+                                <span style="margin-right: 3px;">Lejátszási Listáim</span>
+                                <i class="fa-solid fa-bars"></i>
+                            </a></li>                                     
+                        </ul>
+                    </div>
+                    <div class="search-container trans-bg">
+                        <form action="#" class="from1">
+                            <input type="text" class="search-bar" placeholder="Keresés..">
+                            <button type="submit"><i class="fa fa-search search-icon"></i></button>
+                        </form>
+                    </div>
+                    <div class="navbar-right">
+                        <button class="button" style="margin-right: 25px;" onclick="bejelentkezes()">Bejelentkezés</button>
+                    </div>
+                </div>
+            </nav>
+        </header>       
     
-    <!-- Bejelentkezés és Regisztráció -->
-    <div class="wrapper">
-        <span class="icon-close"><ion-icon name="close"></ion-icon></span>
+        <!-- Main Section -->
 
-        <div class="form-box login">
-              <h2>Bejelentkezés</h2>
-              <form action="#">
-                    <div class="input-box">
-                          <span class="icon"><ion-icon name="mail"></ion-icon></span>
-                          <input type="email" required>
-                          <label>Email</label>
-                    </div>
-                    <div class="input-box">
-                          <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
-                          <input type="password" required>
-                          <label>Jelszó</label>
-                    </div>
-                    <div class="remember">
-                          <label><input type="checkbox"></span>Emlékezz rám</label>
-                          <i><a href="#">Elfelejtetted a jelszavad?</a></i>
-                    </div>
-                    <button type="submit" class="btn">Bejelentkezés</button>
-                    <div class="login-register">
-                          <p>Nincs fiókod?<a href="#" class="register-link"> Regisztráció</a></p>
-                    </div>
-              </form>
-        </div>
+        <main>
 
-        <div class="form-box register">
-              <h2>Regisztráció</h2>
-              <form action="#">
-                    <div class="input-box">
-                          <span class="icon"><ion-icon name="person"></ion-icon></span>
-                          <input type="text" required>
-                          <label>Felhasználónév</label>
-                    </div>
-                    <div class="input-box">
-                          <span class="icon"><ion-icon name="mail"></ion-icon></span>
-                          <input type="email" required>
-                          <label>Email</label>
-                    </div>
-                    <div class="input-box">
-                          <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
-                          <input type="password" required>
-                          <label>Jelszó</label>
-                    </div>
-                    <div class="remember">
-                          <label><input type="checkbox">Elfogadok mindent</label>
-                    </div>
-                    <button type="submit" class="btn">Regisztráció</button>
-                    <div class="login-register">
-                          <p>Van már fiókod?<a href="#" class="login-link"> Bejelentkezés</a></p>
-                    </div>
-              </form>
-        </div>
-    </div>
+            <!-- PlayList side bar -->
 
-    <!------------------------------------------------------------------------------------------------------------------------------------------------->
+            <aside class="aside section-2" style="border-right: 5px solid rgb(17, 17, 102); padding: 12px;">
+                <h1 class="heading-text inline" onclick="hidePlaylistItem(event)">Soron következő zenék <i class="toggleIcon fa-solid fa-minus" style="margin-top: 2%; float: right; font-size: 26px; cursor: pointer;"></i></h1>
+                <div class="playlist">
+                    <div class="playlist-item">
+                        <div class="playlist-content">
+                            <div class="content-left">
+                                <div style="margin-right: 4px;"><h2>01</h2></div>
+                                <div class="coverer">
+                                    <img class="small-img inline-block" src="images/End Game.jpg" alt="">
+                                </div>
+                                <div>
+                                    <div>End Game</div>
+                                    <p>Taylor Swift</p>
+                                </div>
+                            </div>
 
-    <!-- Zenelejátszó -->
-    <div class="player">
-        <div class="wrapper-player">
-            <div class="details">
-                <div class="now-playing">PLAYING x OF y</div>
-                <div class="track-art"></div>
-                <div class="track-name">Track Name</div>
-                <div class="track-artist">Track Artist</div>
+                            <div class="content-right">
+                                <i class="fa-regular fa-heart" onclick="toggleHeart(this)"></i>
+                            </div>                            
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <aside class="aside section-1">
+                <!-- Podcast Section -->
+                <h1 class="heading-text">Podcastok</h1>
+                <section class="container">
+                    <div class="box">
+                        <img src="images/1.jpg" alt="Banner-1">
+                    </div>
+                    <div class="box" style="z-index: 1;">
+                        <img src="images/2.jpg" alt="Banner-3">
+                    </div>
+                </section>
+
+                <!-- Playlists -->
+                <h1 class="heading-text" style="margin-top: 60px;">Lejátszási Listák</h1>
+                <section class="latest-releases">
+                    <div class="card">
+                        <figure>
+                            <a href="#">
+                                <img src="images/End Game.jpg" alt=""> 
+                                <div><i class="fa-solid fa-circle-play" onclick="handleCirclePlay(this)"></i></div>
+                            </a>
+                            <figcaption class="song-info">
+                                <h2>End Game <p>44 zene</p></h2>
+                                <div class="heartIcon"><i class="fa-regular fa-heart" onclick="toggleHeart(this)"></i></div>
+                            </figcaption>
+                         </figure>
+                    </div>
+                    </div>
+                </section>
+
+                <!-- Popular Artists -->
+                <section class="popular-artists">
+                    <h1 class="heading-text">Népszerű előadók</h1>
+                    <div class="popular-artist-content">
+                        <figure>
+                            <a href="#">
+                                <img src="images/End Game.jpg" alt="">
+                                <figcaption>Taylor Swift</figcaption>
+                            </a>
+                        </figure>            
+                    </div>
+
+                </section>
+
+                 <!-- Music Station -->
+
+                 <section class="music-station">
+                     <figure id="mus-sta-fig">
+                         <img src="images/music-station.jpg">
+                     </figure>
+                     <div class="music-mood">
+                        <figure><a href="#"><img src="images/love.jpg" alt=""><p>Love</p></a></figure>
+                        <figure><a href="#"><img src="images/retro.jpg" alt=""><p>Retro</p></a></figure>
+                        <figure><a href="#"><img src="images/chill.jpg" alt=""><p>Chill</p></a></figure>
+                        <figure><a href="#"><img src="images/workout.jpg" alt=""><p>Workout</p></a></figure>
+                        <figure><a href="#"><img src="images/rock.jpg" alt=""><p>Rock</p></a></figure>
+                        <figure><a href="#"><img src="images/pop.jpg" alt=""><p>Pop</p></a></figure>
+                     </div>
+                 </section>
+
+                <!-- Latest English -->
+
+                <section class="latest-songs" id="latest-english">
+                    <h1 class="heading-text">Legfrissebb Magyar</h1>
+                    <div class="latest-song-div">      
+                        <figure>
+                            <a href="#">
+                                <img src="images/End Game.jpg" alt="">
+                                <figcaption class="">
+                                    <h5>End Game</h5>
+                                    <h6>AUG 2, 2020</h6>
+                                </figcaption>
+                            </a>
+                        </figure>       
+                    </div>
+
+                </section>
+
+                <!-- Latest Hungarian -->
+
+                <section class="latest-songs" id="latest-hungarian">
+                    <h1 class="heading-text">Legfrissebb Magyar</h1>
+                    <div class="latest-song-div">
+                        <figure>
+                            <a href="#">
+                                <img src="images/3korty.jpg" alt="">
+                                <figcaption class="">
+                                    <h5>3korty</h5>
+                                    <h6>AUG 2, 2023</h6>
+                                </figcaption>
+                            </a>
+                        </figure>
+                    </div>
+                </section>
+            </aside>
+        </main>
+        
+        <!-- Footer:- Music Palyer Controls  -->
+
+        <footer>
+            <div class="play-song-info trans-bg">
+                <div class="con-left trans-bg">
+                    <div class="footer-img">
+                        <img class="small-img inline-block" src="images/End Game.jpg" alt=""> 
+                    </div>
+                    <div class="trans-bg">
+                        <div class="font-mid trans-bg">End Game</div>
+                        <p class="trans-bg">Taylor Swift</p>
+                    </div> 
+                </div>    
+                <div class="con-right trans-bg side-margin-4px">
+                    <i class="fa-solid fa-ban" style="cursor: pointer;"></i>
+                    <i class="fa-regular fa-heart" style="cursor: pointer;" onclick="toggleHeart(this)"></i>
+                </div>
             </div>
 
-            <div class="slider_container">
-                <div class="current-time">00:00</div>
-                <input type="range" min="1" max="100" value="0" class="seek_slider">
-                <div class="total-duration">00:00</div>
-            </div>
-
-            <div class="slider_container">
-                <i class="fa fa-volume-down"></i>
-                <input type="range" min="1" max="100" value="99" class="volume_slider">
-                <i class="fa fa-volume-up"></i>
-            </div>
-
-            <div class="buttons">
-                <div class="random-track">
-                    <i class="fas fa-random fa-2x" title="random"></i>
+            <div class="player trans-bg">
+                <div class="buttons">
+                    <div class="random-track">
+                        <i class="fa-solid fa-shuffle" title="random"></i>
+                    </div>
+                    <div class="prev-track">
+                        <i class="fa-solid fa-backward-step"></i>
+                    </div>
+                    <div class="playpause-track">
+                        <i class="fa-solid fa-play" onclick="handlePlay(this)"></i>
+                    </div>
+                    <div class="next-track">
+                        <i class="fa-solid fa-forward-step"></i>
+                    </div>
+                    <div class="repeat-track">
+                        <i class="fa-solid fa-arrow-rotate-right" title="repeat"></i>
+                    </div>
                 </div>
-                <div class="prev-track">
-                    <i class="fa fa-step-backward fa-2x"></i>
-                </div>
-                <div class="playpause-track">
-                    <i class="fa-regular fa-circle-play"></i>
-                </div>
-                <div class="next-track">
-                    <i class="fa fa-step-forward fa-2x"></i>
-                </div>
-                <div class="repeat-track">
-                    <i class="fa fa-repeat fa-2x" title="repeat"></i>
+                <div class="slider_container">
+                    <div class="current-time">00:00</div>
+                    <input type="range" min="1" max="100" value="0" class="seek_slider">
+                    <div class="total-duration">00:00</div>
                 </div>
             </div>
+            <div class="extras trans-bg">
+                <div class="slider_container">
+                    <i class="fa fa-volume-down"></i>
+                    <input type="range" min="1" max="100" value="99" class="volume_slider">
+                    <i class="fa fa-volume-up"></i>
+                </div>
+                <div></div>
+            </div>
+        </footer>
+        <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+        <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
-            <div id="wave">
-                <span class="stroke"></span>
-                <span class="stroke"></span>
-                <span class="stroke"></span>
-                <span class="stroke"></span>
-                <span class="stroke"></span>
-                <span class="stroke"></span>
-                <span class="stroke"></span>
-            </div>  
-        </div>
-    </div>
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-
-    <!------------------------------------------------------------------------------------------------------------------------------------------------->
-
-    <!-- Script -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var darkModeToggle = document.getElementById("darkModeToggle");
-            var bodyElement = document.body;
-
-            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                bodyElement.classList.add('dark-mode');
-                darkModeToggle.checked = true;
-            } else {
-                bodyElement.classList.add('light-mode');
-                darkModeToggle.checked = false;
+        <script>
+            function bejelentkezes()
+            {
+                window.location.href = "regbej.html";
             }
 
-            darkModeToggle.addEventListener("change", () => {
-                bodyElement.classList.toggle("dark-mode", darkModeToggle.checked);
-                bodyElement.classList.toggle("light-mode", !darkModeToggle.checked);
-            });
+            function hidePlaylistItem(event) {
+                var clickedElement = event.target;
 
-            var wrapper = document.querySelector(".wrapper");
-            var loginLink = document.querySelector(".login-link");
-            var registerLink = document.querySelector(".register-link");
-            var btnPopup = document.querySelector(".button");
-            var iconClose = document.querySelector(".icon-close");
-            var zenek = document.getElementById("zenek");
-            var player = document.querySelector(".player");
+                if (clickedElement.classList.contains("toggleIcon")) {
+                    var playlistItem = clickedElement.parentElement.nextElementSibling;
+                    var icon = clickedElement;
 
-            zenek.addEventListener("click", ()=> {
-                player.classList.add('active-popup');
-                wrapper.classList.remove('active-popup');
-            });
+                    if (icon.classList.contains("fa-minus")) {
+                        icon.classList.remove("fa-minus");
+                        icon.classList.add("fa-plus");
+                        playlistItem.style.display = "none";
+                    } else {
+                        icon.classList.remove("fa-plus");
+                        icon.classList.add("fa-minus");
+                        playlistItem.style.display = "block";
+                    }
+                }
+            }
 
-            registerLink.addEventListener('click', ()=> {
-                wrapper.classList.add('active');
-            });
-            loginLink.addEventListener('click', ()=> {
-                wrapper.classList.remove('active');
-            });
-            btnPopup.addEventListener('click', ()=> {
-                wrapper.classList.add('active-popup');
-                player.classList.remove('active-popup');
-            });
-            iconClose.addEventListener('click', ()=> {
-                wrapper.classList.remove('active-popup');
-            });
-            
-        });
-    </script>
-    <footer>
-        <p>TuneTracer  Copyright (C) 2023  Fekete Ábel, Kaba Kevin</name>
-    </footer>
-</body>
+            function toggleHeart(event) {
+                if (event.classList.contains("fa-regular")) {
+                    event.classList.remove("fa-regular");
+                    event.classList.add("fa-solid");
+                } else {
+                    event.classList.remove("fa-solid");
+                    event.classList.add("fa-regular");
+                }
+            }   
+
+            function handlePlay(event) {
+                if (event.classList.contains("fa-play")) {
+                    event.classList.remove("fa-play");
+                    event.classList.add("fa-pause");
+                } else {
+                    event.classList.remove("fa-pause");
+                    event.classList.add("fa-play");
+                }
+            }
+
+            function handleCirclePlay(event) {
+                if (event.classList.contains("fa-circle-play")) {
+                    event.classList.remove("fa-circle-play");
+                    event.classList.add("fa-circle-pause");
+                } else {
+                    event.classList.remove("fa-circle-pause");
+                    event.classList.add("fa-circle-play");
+                }
+            }
+        </script>
+    </body>
 </html>

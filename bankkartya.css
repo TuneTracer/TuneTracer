@@ -1,0 +1,99 @@
+* {
+      color: #0be897;;
+      margin: 0;
+      padding: 0;
+      font-family: 'Arial', sans-serif;
+}
+
+body {
+      height: 100vh;
+      background-color: #282c34;
+      color: #ffffff;
+}
+
+.container {
+      width: 40%;
+      margin: 5% auto;
+      padding: 2%;
+}
+
+.ui {
+      border: 2px solid #0be897;
+      border-radius: 15px;
+      margin: 0 auto;
+      padding: 5%;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      background-color: #1a1a1a;
+}
+
+.container-left {
+      width: 100%;
+}
+
+#credit-card {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      font-size: 1.2rem;
+      text-transform: uppercase;
+}
+
+.number-container, .name-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 95%;
+}
+
+.expiration-container, .cvv-container {
+      width: 50%;
+}
+
+input {
+      border: 0;
+      border-radius: 8px;
+      padding: 12px;
+      background-color: #2e2e2e;
+      color: #ffffff;
+      font-weight: 600;
+      font-size: 1.2rem;
+      outline: 0;
+      width: 100%;
+}
+
+input[type="text"]:focus {
+      border: 2px solid #04825B;
+}
+
+input#valid-thru-text, input#cvv-text {
+      width: 90%;
+}
+
+input[type="submit"] {
+      width: 100%;
+      background-color: #0be897;
+      color: #ffffff;
+      padding: 12px;
+      border: 0;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1.2rem;
+}
+
+.infos-container {
+      display: flex;
+      gap: 20px;
+}
+
+@media (max-width: 1024px) {
+      .ui {
+      flex-direction: column-reverse;
+      }
+
+      .container-left, .container-right {
+      width: 100%;
+      }
+}
+  
