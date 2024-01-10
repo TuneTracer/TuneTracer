@@ -15,7 +15,7 @@
                 <div id="navbar" style="padding: 0px;">
                     <div class="navbar-left">
                         <ul>  
-                            <li><a href="profil.html" onclick="toggleProfilePage()">
+                            <li><a href="profil.php" onclick="toggleProfilePage()">
                                 <span style="margin-right: 2px;">Profil</span>
                                 <i class="fas fa-user-circle"></i>
                             </a></li>   
@@ -23,7 +23,7 @@
                                 <span style="margin-right: 3px;">Főmenü</span>
                                 <i class="fa fa-solid fa-music"></i>
                             </a></li> 
-                            <li id="zenek"><a href="playlist.html" style="display: flex; align-items: center; margin-right: 4px;">
+                            <li id="zenek"><a href="playlist.php" style="display: flex; align-items: center; margin-right: 4px;">
                                 <span style="margin-right: 3px;">Lejátszási Listáim</span>
                                 <i class="fa-solid fa-bars"></i>
                             </a></li>                                     
