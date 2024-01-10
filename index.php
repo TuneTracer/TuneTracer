@@ -1,78 +1,117 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title>TuneTracer</title>
-        <script src="https://kit.fontawesome.com/12a41c30dd.js" crossorigin="anonymous"></script>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" type="text/css" href="style.css">  
-    </head>
-    <body>
+<head>
+    <meta charset="utf-8">
+    <title>TuneTracer</title>
+    <script src="https://kit.fontawesome.com/12a41c30dd.js" crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="style.css">  
+</head>
+<body>
 
-        <!-- Header Section  -->
-        <header>
-            <nav class="navbar">
-                <div id="navbar" style="padding: 0px;">
-                    <div class="navbar-left">
-                        <ul>  
-                            <li><a href="profil.html" onclick="toggleProfilePage()">
-                                <span style="margin-right: 2px;">Profil</span>
-                                <i class="fas fa-user-circle"></i>
-                            </a></li>   
-                            <li id="zenek"><a href="#" style="display: flex; align-items: center; margin-right: 4px;">
-                                <span style="margin-right: 3px;">Főmenü</span>
-                                <i class="fa fa-solid fa-music"></i>
-                            </a></li> 
-                            <li id="zenek"><a href="playlist.html" style="display: flex; align-items: center; margin-right: 4px;">
-                                <span style="margin-right: 3px;">Lejátszási Listáim</span>
-                                <i class="fa-solid fa-bars"></i>
-                            </a></li>                                     
-                        </ul>
-                    </div>
-                    <div class="search-container trans-bg">
-                        <form action="#" class="from1">
-                            <input type="text" class="search-bar" placeholder="Keresés..">
-                            <button type="submit"><i class="fa fa-search search-icon"></i></button>
-                        </form>
-                    </div>
-                    <div class="navbar-right">
-                        <?php require "isLoggedIn.php"; if(!isLoggedIn()){ echo "<button class='button' style='margin-right: 25px;' onclick='bejelentkezes()'>Bejelentkezés</button>";}else{echo "<button class='button' style='margin-right: 25px;' onclick='kijelentkezes()'>Kijelentkezés</button>";} ?>
-                    </div>
+    <!-- Header Section  -->
+    <header>
+        <nav class="navbar">
+            <div id="navbar" style="padding: 0px;">
+                <div class="navbar-left">
+                    <ul>  
+                        <li><a href="profil.html" onclick="toggleProfilePage()">
+                            <span style="margin-right: 2px;">Profil</span>
+                            <i class="fas fa-user-circle"></i>
+                        </a></li>   
+                        <li id="zenek"><a href="#" style="display: flex; align-items: center; margin-right: 4px;">
+                            <span style="margin-right: 3px;">Főmenü</span>
+                            <i class="fa fa-solid fa-music"></i>
+                        </a></li> 
+                        <li id="zenek"><a href="playlist.html" style="display: flex; align-items: center; margin-right: 4px;">
+                            <span style="margin-right: 3px;">Lejátszási Listáim</span>
+                            <i class="fa-solid fa-bars"></i>
+                        </a></li>                                     
+                    </ul>
                 </div>
-            </nav>
-        </header>       
-    
-        <!-- Main Section -->
+                <div class="search-container trans-bg">
+                    <form class="from1" method="post" id="search-form">
+                        <input type="text" class="search-bar" id="searchbar" placeholder="Keresés..">
+                        <button type="button" id="search-button"><i class="fa fa-search search-icon"></i></button>
+                    </form>                                            
+                </div>
 
-        <main>
+                <div class="navbar-right">
+                    <button class="button" style="margin-right: 25px;" onclick="bejelentkezes()">Bejelentkezés</button>
+                </div>
+            </div>
+        </nav>
+    </header>       
 
-            <!-- PlayList side bar -->
+    <!-- Main Section -->
 
-            <aside class="aside section-2" style="border-right: 5px solid rgb(17, 17, 102); padding: 12px;">
-                <h1 class="heading-text inline" onclick="hidePlaylistItem(event)">Soron következő zenék <i class="toggleIcon fa-solid fa-minus" style="margin-top: 2%; float: right; font-size: 26px; cursor: pointer;"></i></h1>
-                <div class="playlist">
-                    <div class="playlist-item">
+    <main>
+
+        <!-- PlayList side bar -->
+
+        <aside class="aside section-2" style="border-right: 5px solid rgb(17, 17, 102); padding: 12px;">
+            <h1 class="heading-text inline">Soron következő zenék</h1>
+            <div id="search-results"></div>
+            <h1 class="heading-text inline" onclick="hidePlaylistItem(event)">Soron következő zenék <i class="toggleIcon fa-solid fa-minus" style="margin-top: 2%; float: right; font-size: 26px; cursor: pointer;"></i></h1>
+
+            <?php
+                function getPlaylistSongs() {
+                    $servername = "tunetracer.hu";
+                    $username = "tunetracer";
+                    $password = "tunetracer123321";
+                    $dbname = "tunetracer";
+
+                    $conn = new mysqli($servername, $username, $password, $dbname);
+
+                    if ($conn->connect_error) {
+                        die("Connection failed: " . $conn->connect_error);
+                    }
+
+                    $sql = "SELECT Title, Author, filename, cover_art_file FROM audio";
+                    $result = $conn->query($sql);
+
+                    $playlistSongs = array();
+
+                    if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            $playlistSongs[] = $row;
+                        }
+                    }
+
+                    $conn->close();
+
+                    return $playlistSongs;
+                }
+                $playlistSongs = getPlaylistSongs();
+            ?>
+
+            <div class="playlist">
+                <?php foreach ($playlistSongs as $index => $song) : ?>
+                    <div class="playlist-item" onclick="playSelectedSong('<?php echo $song['Title']; ?>', '<?php echo $song['Author']; ?>', '<?php echo $song['filename']; ?>')">
                         <div class="playlist-content">
                             <div class="content-left">
-                                <div style="margin-right: 4px;"><h2>01</h2></div>
+                                <div style="margin-right: 4px;"><h2><?php echo $index + 1; ?></h2></div>
                                 <div class="coverer">
-                                    <img class="small-img inline-block" src="images/End Game.jpg" alt="">
+                                    <!-- Corrected the display of cover_art_file -->
+                                    <img class="small-img inline-block" src="<?php $song['cover_art_file']; ?>" alt="">
                                 </div>
-                                <div>
-                                    <div>End Game</div>
-                                    <p>Taylor Swift</p>
+                                <div class="soronzenek">
+                                    <div><?php echo $song['Title']; ?></div>
+                                    <p><?php echo $song['Author']; ?></p>
                                 </div>
                             </div>
 
                             <div class="content-right">
                                 <i class="fa-regular fa-heart" onclick="toggleHeart(this)"></i>
-                            </div>                            
+                            </div>
                         </div>
                     </div>
-                </div>
-            </aside>
+                <?php endforeach; ?>
+            </div>
 
-            <aside class="aside section-1">
+        </aside>
+
+        <aside class="aside section-1">
                 <!-- Podcast Section -->
                 <h1 class="heading-text">Podcastok</h1>
                 <section class="container">
@@ -167,72 +206,70 @@
                     </div>
                 </section>
             </aside>
-        </main>
-        
-        <!-- Footer:- Music Palyer Controls  -->
+    </main>
 
-        <footer>
-            <div class="play-song-info trans-bg">
-                <div class="con-left trans-bg">
-                    <div class="footer-img">
-                        <img class="small-img inline-block" src="images/End Game.jpg" alt=""> 
-                    </div>
-                    <div class="trans-bg">
-                        <div class="font-mid trans-bg">End Game</div>
-                        <p class="trans-bg">Taylor Swift</p>
-                    </div> 
-                </div>    
-                <div class="con-right trans-bg side-margin-4px">
-                    <i class="fa-solid fa-ban" style="cursor: pointer;"></i>
-                    <i class="fa-regular fa-heart" style="cursor: pointer;" onclick="toggleHeart(this)"></i>
+    <!-- Footer:- Music Player Controls  -->
+
+    <footer>
+        <div class="play-song-info trans-bg">
+            <div class="con-left trans-bg">
+                <div class="footer-img">
+
+                </div>
+                <div class="trans-bg">
+                    
+                </div> 
+            </div>    
+            <div class="con-right trans-bg side-margin-4px">
+                <i class="fa-solid fa-ban" style="cursor: pointer;"></i>
+                <i class="fa-regular fa-heart" style="cursor: pointer;" onclick="toggleHeart(this)"></i>
+            </div>
+        </div>
+
+        <audio id="audioPlayer" controls style="display: none;"></audio>
+
+        <div class="player trans-bg">
+            <div class="buttons">
+                <div class="random-track">
+                    <i class="fa-solid fa-shuffle" title="random"></i>
+                </div>
+                <div class="prev-track">
+                    <i class="fa-solid fa-backward-step"></i>
+                </div>
+                <div class="playpause-track">
+                    <i id="playPauseButton" class="fa-solid fa-play" onclick="handlePlayPause()"></i>
+                </div>
+
+                <div class="next-track">
+                    <i class="fa-solid fa-forward-step"></i>
+                </div>
+                <div class="repeat-track">
+                    <i class="fa-solid fa-arrow-rotate-right" title="repeat"></i>
                 </div>
             </div>
-
-            <div class="player trans-bg">
-                <div class="buttons">
-                    <div class="random-track">
-                        <i class="fa-solid fa-shuffle" title="random"></i>
-                    </div>
-                    <div class="prev-track">
-                        <i class="fa-solid fa-backward-step"></i>
-                    </div>
-                    <div class="playpause-track">
-                        <i class="fa-solid fa-play" onclick="handlePlay(this)"></i>
-                    </div>
-                    <div class="next-track">
-                        <i class="fa-solid fa-forward-step"></i>
-                    </div>
-                    <div class="repeat-track">
-                        <i class="fa-solid fa-arrow-rotate-right" title="repeat"></i>
-                    </div>
-                </div>
-                <div class="slider_container">
-                    <div class="current-time">00:00</div>
-                    <input type="range" min="1" max="100" value="0" class="seek_slider">
-                    <div class="total-duration">00:00</div>
-                </div>
+            <div class="slider_container">
+                <div class="current-time">00:00</div>
+                <input type="range" min="1" max="100" value="0" class="seek_slider">
+                <div class="total-duration">00:00</div>
             </div>
-            <div class="extras trans-bg">
-                <div class="slider_container">
-                    <i class="fa fa-volume-down"></i>
-                    <input type="range" min="1" max="100" value="99" class="volume_slider">
-                    <i class="fa fa-volume-up"></i>
-                </div>
-                <div></div>
+        </div>
+        <div class="extras trans-bg">
+            <div class="slider_container">
+                <i class="fa fa-volume-down"></i>
+                <input type="range" min="1" max="100" value="99" class="volume_slider">
+                <i class="fa fa-volume-up"></i>
             </div>
-        </footer>
-        <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-        <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+            <div></div>
+        </div>
+    </footer>
 
-        <script>
-            function bejelentkezes()
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+    <script>
+        function bejelentkezes()
             {
-                window.location.href = "regbej.php";
-            }
-
-            function kijelentkezes()
-            {
-                window.location.href = "logout.php";
+                window.location.href = "regbej.html";
             }
 
             function hidePlaylistItem(event) {
@@ -283,6 +320,92 @@
                     event.classList.add("fa-circle-play");
                 }
             }
-        </script>
-    </body>
+
+            var typingTimer;
+            var doneTypingInterval = 100; 
+
+            function performSearch() {
+                clearTimeout(typingTimer);
+                
+                typingTimer = setTimeout(function () {
+                    var searchQuery = document.getElementById("searchbar").value.trim();
+                    if (searchQuery !== "") {
+                        var xhr = new XMLHttpRequest();
+                        xhr.open("POST", "search.php", true);
+                        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                        xhr.onreadystatechange = function () {
+                            if (xhr.readyState == 4) {
+                                if (xhr.status == 200) {
+                                    try {
+                                        var results = JSON.parse(xhr.responseText);
+                                        updateList(results);
+                                    } catch (error) {
+                                        console.error("Error parsing JSON:", error.message);
+                                        clearList();
+                                    }
+                                } else {
+                                    console.error("Request failed with status:", xhr.status);
+                                    clearList();
+                                }
+                            }
+                        };
+                        xhr.send("query=" + searchQuery);
+                    } else {
+                        clearList();
+                    }
+                }, doneTypingInterval);
+            }
+
+            function clearList() {
+                var resultList = document.getElementById("search-results");
+                resultList.innerHTML = "";
+            }
+
+            document.getElementById("searchbar").addEventListener("keyup", performSearch);
+            document.getElementById("search-button").addEventListener("click", performSearch);
+
+            function updateList(results) {
+                var resultList = document.getElementById("search-results");
+                resultList.innerHTML = "";
+
+                if (results && results.length > 0) {
+                    var ul = document.createElement("ul");
+                    for (var i = 0; i < results.length; i++) {
+                        var li = document.createElement("li");
+                        li.textContent = results[i].cim + " - " + results[i].szerzo;
+                        ul.appendChild(li);
+                    }
+                    resultList.appendChild(ul);
+                }
+            }
+
+            function playSelectedSong(title, artist, source) {
+                var audioPlayer = document.getElementById('audioPlayer');
+                var playPauseButton = document.querySelector('.playpause-track');
+
+                audioPlayer.src = source;
+
+                var songInfo = document.createElement('div');
+                songInfo.innerHTML = '<div class="font-mid trans-bg">' + title + '</div><p class="trans-bg">' + artist + '</p>';
+                document.querySelector('.footer-img').innerHTML = songInfo.innerHTML;              
+            }
+
+            // New function to handle play/pause functionality
+            function handlePlayPause() {
+                var audioPlayer = document.getElementById('audioPlayer');
+                var playPauseButton = document.getElementById('playPauseButton');
+
+                if (audioPlayer.paused) {
+                    playPauseButton.classList.remove("fa-play");
+                    playPauseButton.classList.add("fa-pause");
+                    audioPlayer.play();
+                } else {
+                    playPauseButton.classList.remove("fa-pause");
+                    playPauseButton.classList.add("fa-play");
+                    audioPlayer.pause();
+                }
+            }
+
+    </script>
+</body>
 </html>
