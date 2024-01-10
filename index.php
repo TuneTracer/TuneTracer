@@ -30,13 +30,14 @@
                         </ul>
                     </div>
                     <div class="search-container trans-bg">
-                        <form action="#" class="from1">
-                            <input type="text" class="search-bar" placeholder="Keresés..">
-                            <button type="submit"><i class="fa fa-search search-icon"></i></button>
+                        <form class="from1" method="post" id="search-form">
+                            <input type="text" class="search-bar" id="searchbar" placeholder="Keresés..">
+                            <button type="button" id="search-button"><i class="fa fa-search search-icon"></i></button>
                         </form>
                     </div>
+
                     <div class="navbar-right">
-                        <button class="button" style="margin-right: 25px;" onclick="bejelentkezes()">Bejelentkezés</button>
+                        <?php require "isLoggedIn.php"; if(!isLoggedIn()){ echo "<button class='button' style='margin-right: 25px;' onclick='bejelentkezes()'>Bejelentkezés</button>";}else{echo "<button class='button' style='margin-right: 25px;' onclick='kijelentkezes()'>Kijelentkezés</button>";} ?>
                     </div>
                 </div>
             </nav>
@@ -49,18 +50,54 @@
             <!-- PlayList side bar -->
 
             <aside class="aside section-2" style="border-right: 5px solid rgb(17, 17, 102); padding: 12px;">
+<h1 class="heading-text inline">Soron következő zenék</h1>
+            <div id="search-results"></div>
                 <h1 class="heading-text inline" onclick="hidePlaylistItem(event)">Soron következő zenék <i class="toggleIcon fa-solid fa-minus" style="margin-top: 2%; float: right; font-size: 26px; cursor: pointer;"></i></h1>
+
+            <?php
+                function getPlaylistSongs() {
+                    $servername = "tunetracer.hu";
+                    $username = "tunetracer";
+                    $password = "tunetracer123321";
+                    $dbname = "tunetracer";
+
+                    $conn = new mysqli($servername, $username, $password, $dbname);
+
+                    if ($conn->connect_error) {
+                        die("Connection failed: " . $conn->connect_error);
+                    }
+
+                    $sql = "SELECT Title, Author, filename, cover_art_file FROM audio";
+                    $result = $conn->query($sql);
+
+                    $playlistSongs = array();
+
+                    if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            $playlistSongs[] = $row;
+                        }
+                    }
+
+                    $conn->close();
+
+                    return $playlistSongs;
+                }
+                $playlistSongs = getPlaylistSongs();
+            ?>
+
                 <div class="playlist">
-                    <div class="playlist-item">
+                    <?php foreach ($playlistSongs as $index => $song) : ?>
+                    <div class="playlist-item" onclick="playSelectedSong('<?php echo $song['Title']; ?>', '<?php echo $song['Author']; ?>', '<?php echo $song['filename']; ?>')">
                         <div class="playlist-content">
                             <div class="content-left">
-                                <div style="margin-right: 4px;"><h2>01</h2></div>
+                                <div style="margin-right: 4px;"><h2><?php echo $index + 1; ?></h2></div>
                                 <div class="coverer">
-                                    <img class="small-img inline-block" src="images/End Game.jpg" alt="">
+                                    <!-- Corrected the display of cover_art_file -->
+                                    <img class="small-img inline-block" src="<?php $song['cover_art_file']; ?>" alt="">
                                 </div>
-                                <div>
-                                    <div>End Game</div>
-                                    <p>Taylor Swift</p>
+                                <div class="soronzenek">
+                                    <div><?php echo $song['Title']; ?></div>
+                                    <p><?php echo $song['Author']; ?></p>
                                 </div>
                             </div>
 
@@ -69,7 +106,9 @@
                             </div>                            
                         </div>
                     </div>
+<?php endforeach; ?>
                 </div>
+
             </aside>
 
             <aside class="aside section-1">
@@ -169,17 +208,16 @@
             </aside>
         </main>
         
-        <!-- Footer:- Music Palyer Controls  -->
+        <!-- Footer:- Music Player Controls  -->
 
         <footer>
             <div class="play-song-info trans-bg">
                 <div class="con-left trans-bg">
                     <div class="footer-img">
-                        <img class="small-img inline-block" src="images/End Game.jpg" alt=""> 
+                         
                     </div>
                     <div class="trans-bg">
-                        <div class="font-mid trans-bg">End Game</div>
-                        <p class="trans-bg">Taylor Swift</p>
+                        
                     </div> 
                 </div>    
                 <div class="con-right trans-bg side-margin-4px">
@@ -187,6 +225,8 @@
                     <i class="fa-regular fa-heart" style="cursor: pointer;" onclick="toggleHeart(this)"></i>
                 </div>
             </div>
+
+        <audio id="audioPlayer" controls style="display: none;"></audio>
 
             <div class="player trans-bg">
                 <div class="buttons">
@@ -197,8 +237,9 @@
                         <i class="fa-solid fa-backward-step"></i>
                     </div>
                     <div class="playpause-track">
-                        <i class="fa-solid fa-play" onclick="handlePlay(this)"></i>
+                        <i id="playPauseButton" class="fa-solid fa-play" onclick="handlePlayPause()"></i>
                     </div>
+
                     <div class="next-track">
                         <i class="fa-solid fa-forward-step"></i>
                     </div>
@@ -221,13 +262,19 @@
                 <div></div>
             </div>
         </footer>
+
         <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
         <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
         <script>
             function bejelentkezes()
             {
-                window.location.href = "regbej.html";
+                window.location.href = "regbej.php";
+            }
+
+            function kijelentkezes()
+            {
+                window.location.href = "logout.php";
             }
 
             function hidePlaylistItem(event) {
@@ -278,6 +325,92 @@
                     event.classList.add("fa-circle-play");
                 }
             }
+
+            var typingTimer;
+            var doneTypingInterval = 100; 
+
+            function performSearch() {
+                clearTimeout(typingTimer);
+                
+                typingTimer = setTimeout(function () {
+                    var searchQuery = document.getElementById("searchbar").value.trim();
+                    if (searchQuery !== "") {
+                        var xhr = new XMLHttpRequest();
+                        xhr.open("POST", "search.php", true);
+                        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                        xhr.onreadystatechange = function () {
+                            if (xhr.readyState == 4) {
+                                if (xhr.status == 200) {
+                                    try {
+                                        var results = JSON.parse(xhr.responseText);
+                                        updateList(results);
+                                    } catch (error) {
+                                        console.error("Error parsing JSON:", error.message);
+                                        clearList();
+                                    }
+                                } else {
+                                    console.error("Request failed with status:", xhr.status);
+                                    clearList();
+                                }
+                            }
+                        };
+                        xhr.send("query=" + searchQuery);
+                    } else {
+                        clearList();
+                    }
+                }, doneTypingInterval);
+            }
+
+            function clearList() {
+                var resultList = document.getElementById("search-results");
+                resultList.innerHTML = "";
+            }
+
+            document.getElementById("searchbar").addEventListener("keyup", performSearch);
+            document.getElementById("search-button").addEventListener("click", performSearch);
+
+            function updateList(results) {
+                var resultList = document.getElementById("search-results");
+                resultList.innerHTML = "";
+
+                if (results && results.length > 0) {
+                    var ul = document.createElement("ul");
+                    for (var i = 0; i < results.length; i++) {
+                        var li = document.createElement("li");
+                        li.textContent = results[i].cim + " - " + results[i].szerzo;
+                        ul.appendChild(li);
+                    }
+                    resultList.appendChild(ul);
+                }
+            }
+
+            function playSelectedSong(title, artist, source) {
+                var audioPlayer = document.getElementById('audioPlayer');
+                var playPauseButton = document.querySelector('.playpause-track');
+
+                audioPlayer.src = source;
+
+                var songInfo = document.createElement('div');
+                songInfo.innerHTML = '<div class="font-mid trans-bg">' + title + '</div><p class="trans-bg">' + artist + '</p>';
+                document.querySelector('.footer-img').innerHTML = songInfo.innerHTML;              
+            }
+
+            // New function to handle play/pause functionality
+            function handlePlayPause() {
+                var audioPlayer = document.getElementById('audioPlayer');
+                var playPauseButton = document.getElementById('playPauseButton');
+
+                if (audioPlayer.paused) {
+                    playPauseButton.classList.remove("fa-play");
+                    playPauseButton.classList.add("fa-pause");
+                    audioPlayer.play();
+                } else {
+                    playPauseButton.classList.remove("fa-pause");
+                    playPauseButton.classList.add("fa-play");
+                    audioPlayer.pause();
+                }
+            }
+
         </script>
     </body>
 </html>
