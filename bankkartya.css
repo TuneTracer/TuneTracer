@@ -1,18 +1,22 @@
 * {
-      color: #0be897;;
+      color: #0be897;
       margin: 0;
       padding: 0;
       font-family: 'Arial', sans-serif;
 }
 
 body {
-      height: 100vh;
+      min-height: 100vh;
       background-color: #282c34;
       color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
 }
 
 .container {
-      width: 40%;
+      width: 80%;
+      max-width: 600px;
       margin: 5% auto;
       padding: 2%;
 }
@@ -28,7 +32,7 @@ body {
       background-color: #1a1a1a;
 }
 
-.container-left {
+.container-left, .container-right {
       width: 100%;
 }
 
@@ -40,15 +44,18 @@ body {
       text-transform: uppercase;
 }
 
-.number-container, .name-container {
+.number-container,
+.name-container,
+.expiration-container,
+.cvv-container {
       display: flex;
       flex-direction: column;
       gap: 10px;
-      width: 95%;
+      width: 100%;
 }
 
 .expiration-container, .cvv-container {
-      width: 50%;
+      width: 100%;
 }
 
 input {
@@ -61,6 +68,7 @@ input {
       font-size: 1.2rem;
       outline: 0;
       width: 100%;
+      box-sizing: border-box;
 }
 
 input[type="text"]:focus {
@@ -68,7 +76,7 @@ input[type="text"]:focus {
 }
 
 input#valid-thru-text, input#cvv-text {
-      width: 90%;
+      width: 100%;
 }
 
 input[type="submit"] {
@@ -87,13 +95,8 @@ input[type="submit"] {
       gap: 20px;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 768px) {
       .ui {
-      flex-direction: column-reverse;
-      }
-
-      .container-left, .container-right {
-      width: 100%;
+      padding: 3%;
       }
 }
-  
