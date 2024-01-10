@@ -1,58 +1,58 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8">
-    <title>TuneTracer</title>
-    <script src="https://kit.fontawesome.com/12a41c30dd.js" crossorigin="anonymous"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="style.css">  
-</head>
-<body>
+    <head>
+        <meta charset="utf-8">
+        <title>TuneTracer</title>
+        <script src="https://kit.fontawesome.com/12a41c30dd.js" crossorigin="anonymous"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" href="style.css">  
+    </head>
+    <body>
 
-    <!-- Header Section  -->
-    <header>
-        <nav class="navbar">
-            <div id="navbar" style="padding: 0px;">
-                <div class="navbar-left">
-                    <ul>  
-                        <li><a href="profil.html" onclick="toggleProfilePage()">
-                            <span style="margin-right: 2px;">Profil</span>
-                            <i class="fas fa-user-circle"></i>
-                        </a></li>   
-                        <li id="zenek"><a href="#" style="display: flex; align-items: center; margin-right: 4px;">
-                            <span style="margin-right: 3px;">Főmenü</span>
-                            <i class="fa fa-solid fa-music"></i>
-                        </a></li> 
-                        <li id="zenek"><a href="playlist.html" style="display: flex; align-items: center; margin-right: 4px;">
-                            <span style="margin-right: 3px;">Lejátszási Listáim</span>
-                            <i class="fa-solid fa-bars"></i>
-                        </a></li>                                     
-                    </ul>
+        <!-- Header Section  -->
+        <header>
+            <nav class="navbar">
+                <div id="navbar" style="padding: 0px;">
+                    <div class="navbar-left">
+                        <ul>  
+                            <li><a href="profil.html" onclick="toggleProfilePage()">
+                                <span style="margin-right: 2px;">Profil</span>
+                                <i class="fas fa-user-circle"></i>
+                            </a></li>   
+                            <li id="zenek"><a href="#" style="display: flex; align-items: center; margin-right: 4px;">
+                                <span style="margin-right: 3px;">Főmenü</span>
+                                <i class="fa fa-solid fa-music"></i>
+                            </a></li> 
+                            <li id="zenek"><a href="playlist.html" style="display: flex; align-items: center; margin-right: 4px;">
+                                <span style="margin-right: 3px;">Lejátszási Listáim</span>
+                                <i class="fa-solid fa-bars"></i>
+                            </a></li>                                     
+                        </ul>
+                    </div>
+                    <div class="search-container trans-bg">
+                        <form class="from1" method="post" id="search-form">
+                            <input type="text" class="search-bar" id="searchbar" placeholder="Keresés..">
+                            <button type="button" id="search-button"><i class="fa fa-search search-icon"></i></button>
+                        </form>
+                    </div>
+
+                    <div class="navbar-right">
+                        <?php require "isLoggedIn.php"; if(!isLoggedIn()){ echo "<button class='button' style='margin-right: 25px;' onclick='bejelentkezes()'>Bejelentkezés</button>";}else{echo "<button class='button' style='margin-right: 25px;' onclick='kijelentkezes()'>Kijelentkezés</button>";} ?>
+                    </div>
                 </div>
-                <div class="search-container trans-bg">
-                    <form class="from1" method="post" id="search-form">
-                        <input type="text" class="search-bar" id="searchbar" placeholder="Keresés..">
-                        <button type="button" id="search-button"><i class="fa fa-search search-icon"></i></button>
-                    </form>                                            
-                </div>
+            </nav>
+        </header>       
+    
+        <!-- Main Section -->
 
-                <div class="navbar-right">
-                    <button class="button" style="margin-right: 25px;" onclick="bejelentkezes()">Bejelentkezés</button>
-                </div>
-            </div>
-        </nav>
-    </header>       
+        <main>
 
-    <!-- Main Section -->
+            <!-- PlayList side bar -->
 
-    <main>
-
-        <!-- PlayList side bar -->
-
-        <aside class="aside section-2" style="border-right: 5px solid rgb(17, 17, 102); padding: 12px;">
-            <h1 class="heading-text inline">Soron következő zenék</h1>
+            <aside class="aside section-2" style="border-right: 5px solid rgb(17, 17, 102); padding: 12px;">
+<h1 class="heading-text inline">Soron következő zenék</h1>
             <div id="search-results"></div>
-            <h1 class="heading-text inline" onclick="hidePlaylistItem(event)">Soron következő zenék <i class="toggleIcon fa-solid fa-minus" style="margin-top: 2%; float: right; font-size: 26px; cursor: pointer;"></i></h1>
+                <h1 class="heading-text inline" onclick="hidePlaylistItem(event)">Soron következő zenék <i class="toggleIcon fa-solid fa-minus" style="margin-top: 2%; float: right; font-size: 26px; cursor: pointer;"></i></h1>
 
             <?php
                 function getPlaylistSongs() {
@@ -85,8 +85,8 @@
                 $playlistSongs = getPlaylistSongs();
             ?>
 
-            <div class="playlist">
-                <?php foreach ($playlistSongs as $index => $song) : ?>
+                <div class="playlist">
+                    <?php foreach ($playlistSongs as $index => $song) : ?>
                     <div class="playlist-item" onclick="playSelectedSong('<?php echo $song['Title']; ?>', '<?php echo $song['Author']; ?>', '<?php echo $song['filename']; ?>')">
                         <div class="playlist-content">
                             <div class="content-left">
@@ -103,15 +103,15 @@
 
                             <div class="content-right">
                                 <i class="fa-regular fa-heart" onclick="toggleHeart(this)"></i>
-                            </div>
+                            </div>                            
                         </div>
                     </div>
-                <?php endforeach; ?>
-            </div>
+<?php endforeach; ?>
+                </div>
 
-        </aside>
+            </aside>
 
-        <aside class="aside section-1">
+            <aside class="aside section-1">
                 <!-- Podcast Section -->
                 <h1 class="heading-text">Podcastok</h1>
                 <section class="container">
@@ -206,70 +206,75 @@
                     </div>
                 </section>
             </aside>
-    </main>
+        </main>
+        
+        <!-- Footer:- Music Player Controls  -->
 
-    <!-- Footer:- Music Player Controls  -->
-
-    <footer>
-        <div class="play-song-info trans-bg">
-            <div class="con-left trans-bg">
-                <div class="footer-img">
-
+        <footer>
+            <div class="play-song-info trans-bg">
+                <div class="con-left trans-bg">
+                    <div class="footer-img">
+                         
+                    </div>
+                    <div class="trans-bg">
+                        
+                    </div> 
+                </div>    
+                <div class="con-right trans-bg side-margin-4px">
+                    <i class="fa-solid fa-ban" style="cursor: pointer;"></i>
+                    <i class="fa-regular fa-heart" style="cursor: pointer;" onclick="toggleHeart(this)"></i>
                 </div>
-                <div class="trans-bg">
-                    
-                </div> 
-            </div>    
-            <div class="con-right trans-bg side-margin-4px">
-                <i class="fa-solid fa-ban" style="cursor: pointer;"></i>
-                <i class="fa-regular fa-heart" style="cursor: pointer;" onclick="toggleHeart(this)"></i>
             </div>
-        </div>
 
         <audio id="audioPlayer" controls style="display: none;"></audio>
 
-        <div class="player trans-bg">
-            <div class="buttons">
-                <div class="random-track">
-                    <i class="fa-solid fa-shuffle" title="random"></i>
-                </div>
-                <div class="prev-track">
-                    <i class="fa-solid fa-backward-step"></i>
-                </div>
-                <div class="playpause-track">
-                    <i id="playPauseButton" class="fa-solid fa-play" onclick="handlePlayPause()"></i>
-                </div>
+            <div class="player trans-bg">
+                <div class="buttons">
+                    <div class="random-track">
+                        <i class="fa-solid fa-shuffle" title="random"></i>
+                    </div>
+                    <div class="prev-track">
+                        <i class="fa-solid fa-backward-step"></i>
+                    </div>
+                    <div class="playpause-track">
+                        <i id="playPauseButton" class="fa-solid fa-play" onclick="handlePlayPause()"></i>
+                    </div>
 
-                <div class="next-track">
-                    <i class="fa-solid fa-forward-step"></i>
+                    <div class="next-track">
+                        <i class="fa-solid fa-forward-step"></i>
+                    </div>
+                    <div class="repeat-track">
+                        <i class="fa-solid fa-arrow-rotate-right" title="repeat"></i>
+                    </div>
                 </div>
-                <div class="repeat-track">
-                    <i class="fa-solid fa-arrow-rotate-right" title="repeat"></i>
+                <div class="slider_container">
+                    <div class="current-time">00:00</div>
+                    <input type="range" min="1" max="100" value="0" class="seek_slider">
+                    <div class="total-duration">00:00</div>
                 </div>
             </div>
-            <div class="slider_container">
-                <div class="current-time">00:00</div>
-                <input type="range" min="1" max="100" value="0" class="seek_slider">
-                <div class="total-duration">00:00</div>
+            <div class="extras trans-bg">
+                <div class="slider_container">
+                    <i class="fa fa-volume-down"></i>
+                    <input type="range" min="1" max="100" value="99" class="volume_slider">
+                    <i class="fa fa-volume-up"></i>
+                </div>
+                <div></div>
             </div>
-        </div>
-        <div class="extras trans-bg">
-            <div class="slider_container">
-                <i class="fa fa-volume-down"></i>
-                <input type="range" min="1" max="100" value="99" class="volume_slider">
-                <i class="fa fa-volume-up"></i>
-            </div>
-            <div></div>
-        </div>
-    </footer>
+        </footer>
 
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+        <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+        <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
-    <script>
-        function bejelentkezes()
+        <script>
+            function bejelentkezes()
             {
-                window.location.href = "regbej.html";
+                window.location.href = "regbej.php";
+            }
+
+            function kijelentkezes()
+            {
+                window.location.href = "logout.php";
             }
 
             function hidePlaylistItem(event) {
@@ -406,6 +411,6 @@
                 }
             }
 
-    </script>
-</body>
+        </script>
+    </body>
 </html>
