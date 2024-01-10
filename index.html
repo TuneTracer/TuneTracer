@@ -30,11 +30,12 @@
                         </ul>
                     </div>
                     <div class="search-container trans-bg">
-                        <form action="#" class="from1">
-                            <input type="text" class="search-bar" placeholder="Keresés..">
-                            <button type="submit"><i class="fa fa-search search-icon"></i></button>
-                        </form>
+                        <form class="from1" method="post" id="search-form">
+                            <input type="text" class="search-bar" id="searchbar" placeholder="Keresés..">
+                            <button type="button" id="search-button"><i class="fa fa-search search-icon"></i></button>
+                        </form>                                            
                     </div>
+                               
                     <div class="navbar-right">
                         <button class="button" style="margin-right: 25px;" onclick="bejelentkezes()">Bejelentkezés</button>
                     </div>
@@ -49,6 +50,10 @@
             <!-- PlayList side bar -->
 
             <aside class="aside section-2" style="border-right: 5px solid rgb(17, 17, 102); padding: 12px;">
+                <h1 class="heading-text inline">Soron következő zenék</h1>
+                <div id="search-results">
+                   
+                </div>
                 <h1 class="heading-text inline" onclick="hidePlaylistItem(event)">Soron következő zenék <i class="toggleIcon fa-solid fa-minus" style="margin-top: 2%; float: right; font-size: 26px; cursor: pointer;"></i></h1>
                 <div class="playlist">
                     <div class="playlist-item">
@@ -278,6 +283,65 @@
                     event.classList.add("fa-circle-play");
                 }
             }
+
+            var typingTimer;
+            var doneTypingInterval = 100; 
+
+            function performSearch() {
+                clearTimeout(typingTimer);
+                
+                typingTimer = setTimeout(function () {
+                    var searchQuery = document.getElementById("searchbar").value.trim();
+                    if (searchQuery !== "") {
+                        var xhr = new XMLHttpRequest();
+                        xhr.open("POST", "search.php", true);
+                        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                        xhr.onreadystatechange = function () {
+                            if (xhr.readyState == 4) {
+                                if (xhr.status == 200) {
+                                    try {
+                                        var results = JSON.parse(xhr.responseText);
+                                        updateList(results);
+                                    } catch (error) {
+                                        console.error("Error parsing JSON:", error.message);
+                                        clearList();
+                                    }
+                                } else {
+                                    console.error("Request failed with status:", xhr.status);
+                                    clearList();
+                                }
+                            }
+                        };
+                        xhr.send("query=" + searchQuery);
+                    } else {
+                        clearList();
+                    }
+                }, doneTypingInterval);
+            }
+
+            function clearList() {
+                var resultList = document.getElementById("search-results");
+                resultList.innerHTML = "";
+            }
+
+            document.getElementById("searchbar").addEventListener("keyup", performSearch);
+            document.getElementById("search-button").addEventListener("click", performSearch);
+
+            function updateList(results) {
+                var resultList = document.getElementById("search-results");
+                resultList.innerHTML = "";
+
+                if (results && results.length > 0) {
+                    var ul = document.createElement("ul");
+                    for (var i = 0; i < results.length; i++) {
+                        var li = document.createElement("li");
+                        li.textContent = results[i].cim + " - " + results[i].szerzo;
+                        ul.appendChild(li);
+                    }
+                    resultList.appendChild(ul);
+                }
+            }
+
         </script>
     </body>
 </html>
