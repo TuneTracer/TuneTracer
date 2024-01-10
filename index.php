@@ -54,59 +54,59 @@
             <div id="search-results"></div>
                 <h1 class="heading-text inline" onclick="hidePlaylistItem(event)">Soron következő zenék <i class="toggleIcon fa-solid fa-minus" style="margin-top: 2%; float: right; font-size: 26px; cursor: pointer;"></i></h1>
 
-            <?php
-                function getPlaylistSongs() {
-                    $servername = "tunetracer.hu";
-                    $username = "tunetracer";
-                    $password = "tunetracer123321";
-                    $dbname = "tunetracer";
+                <?php
+                    function getPlaylistSongs() {
+                        $servername = "tunetracer.hu";
+                        $username = "tunetracer";
+                        $password = "tunetracer123321";
+                        $dbname = "tunetracer";
 
-                    $conn = new mysqli($servername, $username, $password, $dbname);
+                        $conn = new mysqli($servername, $username, $password, $dbname);
 
-                    if ($conn->connect_error) {
-                        die("Connection failed: " . $conn->connect_error);
-                    }
-
-                    $sql = "SELECT Title, Author, filename, cover_art_file FROM audio";
-                    $result = $conn->query($sql);
-
-                    $playlistSongs = array();
-
-                    if ($result->num_rows > 0) {
-                        while ($row = $result->fetch_assoc()) {
-                            $playlistSongs[] = $row;
+                        if ($conn->connect_error) {
+                            die("Connection failed: " . $conn->connect_error);
                         }
+
+                        $sql = "SELECT Title, Author, filename, cover_art_file FROM audio";
+                        $result = $conn->query($sql);
+
+                        $playlistSongs = array();
+
+                        if ($result->num_rows > 0) {
+                            while ($row = $result->fetch_assoc()) {
+                                $playlistSongs[] = $row;
+                            }
+                        }
+
+                        $conn->close();
+
+                        return $playlistSongs;
                     }
-
-                    $conn->close();
-
-                    return $playlistSongs;
-                }
-                $playlistSongs = getPlaylistSongs();
-            ?>
+                    $playlistSongs = getPlaylistSongs();
+                ?>
 
                 <div class="playlist">
                     <?php foreach ($playlistSongs as $index => $song) : ?>
-                    <div class="playlist-item" onclick="playSelectedSong('<?php echo $song['Title']; ?>', '<?php echo $song['Author']; ?>', '<?php echo $song['filename']; ?>')">
-                        <div class="playlist-content">
-                            <div class="content-left">
-                                <div style="margin-right: 4px;"><h2><?php echo $index + 1; ?></h2></div>
-                                <div class="coverer">
-                                    <!-- Corrected the display of cover_art_file -->
-                                    <img class="small-img inline-block" src="<?php $song['cover_art_file']; ?>" alt="">
+                        <div class="playlist-item" onclick="playSelectedSong('<?php echo $song['Title']; ?>', '<?php echo $song['Author']; ?>', '<?php echo $song['filename']; ?>')">
+                            <div class="playlist-content">
+                                <div class="content-left">
+                                    <div style="margin-right: 4px;"><h2><?php echo $index + 1; ?></h2></div>
+                                    <div class="coverer">
+                                        <!-- Corrected the display of cover_art_file -->
+                                        <img class="small-img inline-block" src="<?php echo $song['cover_art_file']; ?>" alt="">
+                                    </div>
+                                    <div class="soronzenek">
+                                        <div><?php echo $song['Title']; ?></div>
+                                        <p><?php echo $song['Author']; ?></p>
+                                    </div>
                                 </div>
-                                <div class="soronzenek">
-                                    <div><?php echo $song['Title']; ?></div>
-                                    <p><?php echo $song['Author']; ?></p>
-                                </div>
-                            </div>
 
-                            <div class="content-right">
-                                <i class="fa-regular fa-heart" onclick="toggleHeart(this)"></i>
-                            </div>                            
+                                <div class="content-right">
+                                    <i class="fa-regular fa-heart" onclick="toggleHeart(this)"></i>
+                                </div>                            
+                            </div>
                         </div>
-                    </div>
-<?php endforeach; ?>
+                    <?php endforeach; ?>
                 </div>
 
             </aside>
@@ -226,24 +226,27 @@
                 </div>
             </div>
 
-        <audio id="audioPlayer" controls style="display: none;"></audio>
+            <audio id="audioPlayer" controls style="display: none;"></audio>
 
             <div class="player trans-bg">
                 <div class="buttons">
-                    <div class="random-track">
+                    <div class="random-track" onclick="toggleRandom()">
                         <i class="fa-solid fa-shuffle" title="random"></i>
                     </div>
-                    <div class="prev-track">
+                    
+                    <div class="prev-track" onclick="playPreviousTrack()">
                         <i class="fa-solid fa-backward-step"></i>
                     </div>
-                    <div class="playpause-track">
-                        <i id="playPauseButton" class="fa-solid fa-play" onclick="handlePlayPause()"></i>
+
+                    <div class="playpause-track" onclick="handlePlayPause()">
+                        <i id="playPauseButton" class="fa-solid fa-play"></i>
                     </div>
 
-                    <div class="next-track">
+                    <div class="next-track" onclick="playNextTrack()">
                         <i class="fa-solid fa-forward-step"></i>
                     </div>
-                    <div class="repeat-track">
+
+                    <div class="repeat-track" id="repeatButton">
                         <i class="fa-solid fa-arrow-rotate-right" title="repeat"></i>
                     </div>
                 </div>
@@ -256,7 +259,7 @@
             <div class="extras trans-bg">
                 <div class="slider_container">
                     <i class="fa fa-volume-down"></i>
-                    <input type="range" min="1" max="100" value="99" class="volume_slider">
+                    <input type="range" min="1" max="100" value="99" class="volume_slider" id="volumeSlider">
                     <i class="fa fa-volume-up"></i>
                 </div>
                 <div></div>
@@ -331,7 +334,7 @@
 
             function performSearch() {
                 clearTimeout(typingTimer);
-                
+
                 typingTimer = setTimeout(function () {
                     var searchQuery = document.getElementById("searchbar").value.trim();
                     if (searchQuery !== "") {
@@ -343,7 +346,12 @@
                                 if (xhr.status == 200) {
                                     try {
                                         var results = JSON.parse(xhr.responseText);
-                                        updateList(results);
+                                        if (Array.isArray(results)) {
+                                            updateList(results);
+                                        } else {
+                                            console.error("Invalid response format:", xhr.responseText);
+                                            clearList();
+                                        }
                                     } catch (error) {
                                         console.error("Error parsing JSON:", error.message);
                                         clearList();
@@ -384,18 +392,28 @@
                 }
             }
 
-            function playSelectedSong(title, artist, source) {
+            function playSelectedSong(title, artist, filename) {
                 var audioPlayer = document.getElementById('audioPlayer');
-                var playPauseButton = document.querySelector('.playpause-track');
+                var playPauseButton = document.getElementById('playPauseButton');
 
-                audioPlayer.src = source;
+                var isPlaying = !audioPlayer.paused;
+
+                var musicFolderPath = 'music/';
+                var musicUrl = musicFolderPath + filename;
+                audioPlayer.src = musicUrl;
 
                 var songInfo = document.createElement('div');
                 songInfo.innerHTML = '<div class="font-mid trans-bg">' + title + '</div><p class="trans-bg">' + artist + '</p>';
-                document.querySelector('.footer-img').innerHTML = songInfo.innerHTML;              
+                document.querySelector('.footer-img').innerHTML = songInfo.innerHTML;
+
+                if (isPlaying) {
+                    audioPlayer.play();
+                } else {
+                    playPauseButton.classList.remove("fa-pause");
+                    playPauseButton.classList.add("fa-play");
+                }
             }
 
-            // New function to handle play/pause functionality
             function handlePlayPause() {
                 var audioPlayer = document.getElementById('audioPlayer');
                 var playPauseButton = document.getElementById('playPauseButton');
@@ -411,6 +429,123 @@
                 }
             }
 
+            var currentSongIndex = 0;
+            var playlistSongs = <?php echo json_encode($playlistSongs); ?>;
+
+            function playPreviousTrack() {
+                if (currentSongIndex > 0) {
+                    currentSongIndex--;
+                } else {
+                    currentSongIndex = playlistSongs.length - 1;
+                }
+
+                playSelectedSong(playlistSongs[currentSongIndex].Title, playlistSongs[currentSongIndex].Author, playlistSongs[currentSongIndex].filename);
+            }
+
+            var playlistSongs = <?php echo json_encode($playlistSongs); ?>;
+            var currentSongIndex = 0;
+            var shuffledPlaylist = []; 
+            var isShuffleActive = false; 
+
+            function shufflePlaylist() {
+                shuffledPlaylist = [...playlistSongs];
+                for (let i = shuffledPlaylist.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [shuffledPlaylist[i], shuffledPlaylist[j]] = [shuffledPlaylist[j], shuffledPlaylist[i]];
+                }
+            }
+
+            function toggleRandom() {
+                var randomButton = document.querySelector('.random-track');
+
+                if (!isShuffleActive) {
+                    isShuffleActive = true;
+                    shufflePlaylist();
+                    randomButton.classList.add("active"); 
+                } else {
+                    isShuffleActive = false;
+                    shuffledPlaylist = [];
+                    randomButton.classList.remove("active"); 
+                }
+            }
+
+            function playNextTrack() {
+                if (isShuffleActive) {
+                    currentSongIndex = Math.floor(Math.random() * shuffledPlaylist.length);
+                    playSelectedSong(shuffledPlaylist[currentSongIndex].Title, shuffledPlaylist[currentSongIndex].Author, shuffledPlaylist[currentSongIndex].filename);
+                } else {
+                    if (currentSongIndex < playlistSongs.length - 1) {
+                        currentSongIndex++;
+                    } else {
+                        currentSongIndex = 0;
+                    }
+                    playSelectedSong(playlistSongs[currentSongIndex].Title, playlistSongs[currentSongIndex].Author, playlistSongs[currentSongIndex].filename);
+                }
+            }
+
+            function updateSeekBar() {
+                var audioPlayer = document.getElementById('audioPlayer');
+                var seekSlider = document.querySelector('.seek_slider');
+                var currentTimeElement = document.querySelector('.current-time');
+                var totalDurationElement = document.querySelector('.total-duration');
+
+                var currentTime = audioPlayer.currentTime;
+                var totalDuration = audioPlayer.duration;
+
+                currentTimeElement.textContent = formatTime(currentTime);
+                totalDurationElement.textContent = formatTime(totalDuration);
+
+                var seekPercentage = (currentTime / totalDuration) * 100;
+                seekSlider.value = seekPercentage;
+            }
+
+            function formatTime(seconds) {
+                var minutes = Math.floor(seconds / 60);
+                var remainingSeconds = Math.floor(seconds % 60);
+
+                var formattedTime = minutes + ":" + (remainingSeconds < 10 ? "0" : "") + remainingSeconds;
+                return formattedTime;
+            }
+
+            document.addEventListener("DOMContentLoaded", function () {
+                var volumeSlider = document.getElementById("volumeSlider");
+                var audioPlayer = document.getElementById('audioPlayer');
+
+                volumeSlider.addEventListener("input", function () {
+                    var volume = volumeSlider.value / 100;
+                    audioPlayer.volume = volume;
+                });
+
+                var seekSlider = document.querySelector('.seek_slider');
+                seekSlider.addEventListener('input', function () {
+                    var seekPercentage = seekSlider.value;
+                    var newTime = (seekPercentage * audioPlayer.duration) / 100;
+                    audioPlayer.currentTime = newTime;
+                });
+
+                audioPlayer.addEventListener('timeupdate', function () {
+                    updateSeekBar();
+                });
+            });
+
+            function replayTrack() {
+                var audioPlayer = document.getElementById('audioPlayer');
+                var playPauseButton = document.getElementById('playPauseButton');
+                audioPlayer.currentTime = 0;
+
+                if (audioPlayer.paused) {
+                    playPauseButton.classList.remove("fa-play");
+                    playPauseButton.classList.add("fa-pause");
+                    audioPlayer.play();
+                }
+            }
+
+            document.addEventListener("DOMContentLoaded", function () {
+                var replayButton = document.querySelector('.repeat-track');
+                replayButton.addEventListener('click', function () {
+                    replayTrack();
+                });
+            });
         </script>
     </body>
 </html>
