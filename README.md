@@ -88,7 +88,7 @@ The **TuneTracer** is a music player website that offers similar features to Spo
 - **Hét 11: Végleges Tesztelés és Start:**
   - Utolsó tesztek végrehajtása, biztonsági ellenőrzések, és az alkalmazás elindítása.
 
-- **Készültségjelző:** - 10%
+- **Készültségjelző:** - 51%
 
 ---
 ## ***Adatbázis:***
