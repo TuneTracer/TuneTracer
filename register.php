@@ -11,7 +11,7 @@
     $name = validate($_POST["name"]);
     $email = validate($_POST["email"]);
     $pass = validate($_POST["pass"]);
-    $hashedPassword = password_hash($pass,PASSWORD_ARGON2ID);
+    $hashedPassword = password_hash($pass,PASSWORD_BCRYPT);
     echo $name." ".$email." ".$hashedPassword;
     $sql = "INSERT INTO `users`(`Username`, `Email`, `Password`) VALUES (?,?,?)";
     $stmt = mysqli_prepare($conn, $sql);
