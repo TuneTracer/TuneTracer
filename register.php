@@ -1,9 +1,17 @@
 <?php 
+
+    function validate($data){
+        $data = trim($data);
+        $data = stripslashes($data);
+        $data = htmlspecialchars($data);
+        return $data;
+    }
+
     require "database.php";
-    $name = $_POST["name"];
-    $email = $_POST["email"];
-    $pass = $_POST["pass"];
-    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+    $name = validate($_POST["name"]);
+    $email = validate($_POST["email"]);
+    $pass = validate($_POST["pass"]);
+    $hashedPassword = password_hash($pass,PASSWORD_ARGON2ID);
     echo $name." ".$email." ".$hashedPassword;
     $sql = "INSERT INTO `users`(`Username`, `Email`, `Password`) VALUES (?,?,?)";
     $stmt = mysqli_prepare($conn, $sql);
@@ -14,5 +22,5 @@
     }else{
         echo "Databse error!";
     }
-    header("location: regbej.html")
+    header("location: regbej.php")
 ?>
