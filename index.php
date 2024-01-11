@@ -57,62 +57,62 @@
                 <h1 class="heading-text inline" onclick="hidePlaylistItem(event)">Soron következő zenék <i class="toggleIcon fa-solid fa-minus" style="margin-top: 2%; float: right; font-size: 26px; cursor: pointer;"></i></h1>
 
                 <?php
-                function getPlaylistSongs() {
-                    $servername = "tunetracer.hu";
-                    $username = "tunetracer";
-                    $password = "tunetracer123321";
-                    $dbname = "tunetracer";
+                    function getPlaylistSongs() {
+                        $servername = "tunetracer.hu";
+                        $username = "tunetracer";
+                        $password = "tunetracer123321";
+                        $dbname = "tunetracer";
 
-                    $conn = new mysqli($servername, $username, $password, $dbname);
+                        $conn = new mysqli($servername, $username, $password, $dbname);
 
-                    if ($conn->connect_error) {
-                        die("Connection failed: " . $conn->connect_error);
-                    }
-
-                    $sql = "SELECT audio.Title, artist.Name AS Author, audio.filename, audio.cover_art_file
-                            FROM audio
-                            JOIN artist ON audio.Author = artist.ID";
-
-                    $result = $conn->query($sql);
-
-                    $playlistSongs = array();
-
-                    if ($result->num_rows > 0) {
-                        while ($row = $result->fetch_assoc()) {
-                            $playlistSongs[] = $row;
+                        if ($conn->connect_error) {
+                            die("Connection failed: " . $conn->connect_error);
                         }
+
+                        $sql = "SELECT audio.Title, artist.Name AS Author, audio.filename, audio.cover_art_file
+                                FROM audio
+                                JOIN artist ON audio.Author = artist.ID";
+
+                        $result = $conn->query($sql);
+
+                        $playlistSongs = array();
+
+                        if ($result->num_rows > 0) {
+                            while ($row = $result->fetch_assoc()) {
+                                $playlistSongs[] = $row;
+                            }
+                        }
+
+                        $conn->close();
+
+                        return $playlistSongs;
                     }
 
-                    $conn->close();
-
-                    return $playlistSongs;
-                }
-
-                $playlistSongs = getPlaylistSongs();
+                    $playlistSongs = getPlaylistSongs();
                 ?>
 
                 <div class="playlist">
-                        <?php foreach ($playlistSongs as $index => $song) : ?>
-                            <div class="playlist-item" onclick="playSelectedSong('<?php echo $song['Title']; ?>', '<?php echo $song['Author']; ?>', '<?php echo $song['filename']; ?>', 'regular')">
-                                <div class="playlist-content">
-                                    <div class="content-left">
-                                        <div style="margin-right: 4px;"><h2><?php echo $index + 1; ?></h2></div>
-                                        <div class="coverer">
-                                            <img class="small-img inline-block" src="<?php echo $song['cover_art_file']; ?>" alt="">
-                                        </div>
-                                        <div class="soronzenek">
-                                            <div><?php echo $song['Title']; ?></div>
-                                            <p><?php echo $song['Author']; ?></p>
-                                        </div>
+                    <?php foreach ($playlistSongs as $index => $song) : ?>
+                        <div class="playlist-item" onclick="playSelectedSong('<?php echo $song['Title']; ?>', '<?php echo $song['Author']; ?>', '<?php echo $song['filename']; ?>', 'regular')">
+                            <div class="playlist-content">
+                                <div class="content-left">
+                                    <div style="margin-right: 4px;"><h2><?php echo $index + 1; ?></h2></div>
+                                    <div class="coverer">
+                                        <img class="small-img inline-block" src="<?php echo $song['cover_art_file']; ?>" alt="">
                                     </div>
-
-                                    <div class="content-right">
-                                        <i class="fa-regular fa-heart" onclick="toggleHeart(this)"></i>
+                                    <div class="soronzenek">
+                                        <div><?php echo $song['Title']; ?></div>
+                                        <p><?php echo $song['Author']; ?></p>
                                     </div>
                                 </div>
+
+                                <div class="content-right">
+                                    <i class="fa-regular fa-heart" onclick="toggleHeart(this)"></i>
+                                </div>
                             </div>
-                        <?php endforeach; ?>
-                    </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
             </aside>
 
             <aside class="aside section-1">
@@ -120,10 +120,10 @@
                 <h1 class="heading-text">Podcastok</h1>
                 <section class="container">
                     <div class="box">
-                        <a href="https://youtu.be/B4w6yc9Lup0"><img src="images/1.jpg" alt="TheVR Podcast"></a>
+                        <img src="images/1.jpg" alt="Banner-1">
                     </div>
                     <div class="box" style="z-index: 1;">
-                        <a href="https://youtu.be/_foUdRPuUlY"><img src="images/2.jpg" alt="Azahriah Podcast"></a>
+                        <img src="images/2.jpg" alt="Banner-3">
                     </div>
                 </section>
 
@@ -428,7 +428,7 @@
                 }
             }
 
-            function isSongBlocked() {
+            function getBlockedSongs() {
                 var blockedSongs = localStorage.getItem('blockedSongs');
                 blockedSongs = blockedSongs ? JSON.parse(blockedSongs) : [];
                 return blockedSongs;
@@ -451,7 +451,7 @@
 
             function getNextUnblockedIndex() {
                 var currentIndex = currentSongIndex;
-                var blockedSongs = isSongBlocked();
+                var blockedSongs = getBlockedSongs();
 
                 while (true) {
                     currentIndex = (currentIndex + 1) % playlistSongs.length;
@@ -471,7 +471,6 @@
                     currentSongIndex = previousUnblockedIndex;
                     playSelectedSong(playlistSongs[currentSongIndex].Title, playlistSongs[currentSongIndex].Author, playlistSongs[currentSongIndex].filename);
                 } else {
-                    stopPlayback();
                 }
             }
 
@@ -495,7 +494,7 @@
                 if (currentSongIndex !== null && currentSongIndex >= 0 && currentSongIndex < playlistSongs.length) {
                     var blockedSongIndex = currentSongIndex;
 
-                    if (isSongBlocked().indexOf(playlistSongs[blockedSongIndex].filename) !== -1) {
+                    if (getBlockedSongs(playlistSongs[blockedSongIndex].filename)) {
                         playNextUnblockedTrack();
                     } else {
                         var playlistItems = document.querySelectorAll('.playlist-item');
@@ -503,9 +502,7 @@
                             playlistItems[blockedSongIndex].classList.add('blocked-song');
                         }
 
-                        var blockedSongs = localStorage.getItem('blockedSongs');
-                        blockedSongs = blockedSongs ? JSON.parse(blockedSongs) : [];
-
+                        var blockedSongs = getBlockedSongs();
                         if (blockedSongs.indexOf(playlistSongs[blockedSongIndex].filename) === -1) {
                             blockedSongs.push(playlistSongs[blockedSongIndex].filename);
                             localStorage.setItem('blockedSongs', JSON.stringify(blockedSongs));
@@ -530,7 +527,19 @@
             }
 
             var currentSongIndex = 0;
-            var playlistSongs = <?php echo json_encode($playlistSongs); ?>;
+            var playlistSongs = <?php
+                $json = json_encode($playlistSongs);
+
+                if ($json === false) {
+                    // Hiba a JSON generálásakor
+                    $jsonError = json_last_error_msg();
+                    echo 'console.error("JSON encoding error: ' . $jsonError . '");';
+                    echo 'var playlistSongs = [];';
+                } else {
+                    echo $json;
+                }
+            ?>;
+
 
             function playPreviousTrack() {
                 if (isShuffleActive) {
