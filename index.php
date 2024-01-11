@@ -98,7 +98,7 @@
                                 <div class="content-left">
                                     <div style="margin-right: 4px;"><h2><?php echo $index + 1; ?></h2></div>
                                     <div class="coverer">
-                                        <img class="small-img inline-block" src="https://raw.githubusercontent.com/TuneTracer/TuneTracer/main/images/music/<?php echo $song['cover_art_path']; ?>" alt="<?php echo $song['cover_art_path']; ?>">
+                                        <img class="small-img inline-block" src="https://raw.githubusercontent.com/TuneTracer/TuneTracer/main/images/music/<?php if($song['cover_art_path'] != ""){echo $song['cover_art_path'];}else{echo "placeholder.png";} ?>" alt=<?php if($song['cover_art_path'] != ""){echo $song['cover_art_path'];}else{echo "placeholder.png";} ?>">
                                     </div>
                                     <div class="soronzenek">
                                         <div><?php echo $song['Title']; ?></div>
