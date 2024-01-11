@@ -822,17 +822,21 @@
 
             function playPodcast(title, author, filename) {
                 var podcastPlayer = document.getElementById('podcastPlayer');
-                var podcastFolderPath = 'https://media.githubusercontent.com/media/TuneTracer/TuneTracer/main/podacsts/';
-                var podcastUrl = podcastFolderPath + filename;
+                var podcastFolderPath = 'https://media.githubusercontent.com/media/TuneTracer/TuneTracer/main/';
+                var podcastUrl = podcastFolderPath + 'podcasts/thevrpodcast.mp3';
                 podcastPlayer.src = podcastUrl;
 
                 var podcastInfo = document.createElement('div');
                 podcastInfo.innerHTML = '<div class="font-mid trans-bg">' + title + '</div><p class="trans-bg">' + author + '</p>';
                 document.querySelector('.footer-img').innerHTML = podcastInfo.innerHTML;
 
-                podcastPlayer.play().catch(function(error) {
-                    console.error('Error playing the podcast:', error);
-                });
+                var isPlaying = !podcastPlayer.paused;
+
+                if (isPlaying) {
+                    podcastPlayer.play();
+                } else {
+                    podcastPlayer.play();
+                }
             }
 
             localStorage.setItem('currentSongIndex', JSON.stringify(currentSongIndex));
