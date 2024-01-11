@@ -824,7 +824,7 @@
             function playPodcast(title, author, filename) {
                 var podcastPlayer = document.getElementById('podcastPlayer');
                 var mediaFolderPath = 'https://github.com/TuneTracer/TuneTracer/raw/main/';
-                var podcastFolderPath = mediaFolderPath + 'podcasts/';
+                var podcastFolderPath = mediaFolderPath + 'podacsts/';
                 var podcastUrl = podcastFolderPath + filename;
                 podcastPlayer.src = podcastUrl;
 
