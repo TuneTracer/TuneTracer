@@ -513,7 +513,7 @@
                 var isPlaying = !audioPlayer.paused;
 
                 //var musicFolderPath = 'music/';
-                var mediaFolderPath = 'https://media.githubusercontent.com/media/TuneTracer/TuneTracer/main/';
+                var mediaFolderPath = 'https://github.com/TuneTracer/TuneTracer/raw/main/';
                 var musicFolderPath = mediaFolderPath + 'music/';
                 var musicUrl = musicFolderPath + filename;
                 audioPlayer.src = musicUrl;
@@ -823,8 +823,9 @@
 
             function playPodcast(title, author, filename) {
                 var podcastPlayer = document.getElementById('podcastPlayer');
-                var podcastFolderPath = 'https://media.githubusercontent.com/media/TuneTracer/TuneTracer/main/podcasts/';
-                var podcastUrl = podcastFolderPath + 'thevrpodcast.mp3';
+                var mediaFolderPath = 'https://github.com/TuneTracer/TuneTracer/raw/main/';
+                var podcastFolderPath = mediaFolderPath + 'podcasts/';
+                var podcastUrl = podcastFolderPath + filename;
                 podcastPlayer.src = podcastUrl;
 
                 var podcastInfo = document.createElement('div');
