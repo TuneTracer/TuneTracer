@@ -154,13 +154,23 @@
                             $randomPlaylist[] = $row;
                         }
                     }
+                    // Pop Playlist
+                    $popPlaylistQuery = "SELECT * FROM audio WHERE genre = 1 ORDER BY RAND() LIMIT 30";
+                    $popPlaylistResult = $conn->query($popPlaylistQuery);
+                    $popPlaylist = $popPlaylistResult->fetch_all(MYSQLI_ASSOC);
+
+                    // Rock Playlist
+                    $rockPlaylistQuery = "SELECT * FROM audio WHERE genre = 2 ORDER BY RAND() LIMIT 30";
+                    $rockPlaylistResult = $conn->query($rockPlaylistQuery);
+                    $rockPlaylist = $rockPlaylistResult->fetch_all(MYSQLI_ASSOC);
 
                     $conn->close();
-                ?>
+                ?>          
 
                 <!-- Playlists -->
                 <h1 class="heading-text" style="margin-top: 60px;">Lejátszási Listák</h1>
                 <section class="latest-releases">
+                    <!-- Random Playlist -->
                     <div class="card">
                         <figure>
                             <a href="#" onclick="playRandomPlaylist()">
@@ -169,6 +179,34 @@
                             </a>
                             <figcaption class="song-info">
                                 <h2>Random Playlist <p><?php echo count($randomPlaylist); ?> zene</p></h2>
+                                <div class="heartIcon"><i class="fa-regular fa-heart" onclick="toggleHeart(this)"></i></div>
+                            </figcaption>
+                        </figure>
+                    </div>
+
+                    <!-- PoP Playlist -->
+                    <div class="card">
+                        <figure>
+                            <a href="#" onclick="playGenrePlaylist(1)">
+                                <img src="images/popplaylist.jpg" alt=""> 
+                                <div><i class="fa-solid fa-circle-play" onclick="handleCirclePlay(this)"></i></div>
+                            </a>
+                            <figcaption class="song-info">
+                                <h2>Pop Playlist <p><?php echo count($popPlaylist); ?> zene</p></h2>
+                                <div class="heartIcon"><i class="fa-regular fa-heart" onclick="toggleHeart(this)"></i></div>
+                            </figcaption>
+                        </figure>
+                    </div>
+
+                    <!-- Rock Playlist -->
+                    <div class="card">
+                        <figure>
+                            <a href="#" onclick="playGenrePlaylist(2)">
+                                <img src="images/Rockplaylist.jpg" alt=""> 
+                                <div><i class="fa-solid fa-circle-play" onclick="handleCirclePlay(this)"></i></div>
+                            </a>
+                            <figcaption class="song-info">
+                                <h2>Rock Playlist <p><?php echo count($rockPlaylist); ?> zene</p></h2>
                                 <div class="heartIcon"><i class="fa-regular fa-heart" onclick="toggleHeart(this)"></i></div>
                             </figcaption>
                         </figure>
@@ -733,6 +771,31 @@
                     playSelectedSong(randomPlaylist[currentSongIndex].Title, randomPlaylist[currentSongIndex].Author, randomPlaylist[currentSongIndex].filename);
                 } else {
                     console.error("Nincs elérhető zene a véletlenszerű lejátszási listán.");
+                }
+            }
+
+            function playGenrePlaylist(genre) {
+                var audioPlayer = document.getElementById('audioPlayer');
+                var playPauseButton = document.getElementById('playPauseButton');
+                var currentSongIndex = 0;
+                var genrePlaylist;
+
+                switch (genre) {
+                    case 1:
+                        genrePlaylist = <?php echo json_encode($popPlaylist); ?>;
+                        break;
+                    case 2:
+                        genrePlaylist = <?php echo json_encode($rockPlaylist); ?>;
+                        break;
+                    default:
+                        console.error("Ismeretlen műfaj.");
+                        return;
+                }
+
+                if (genrePlaylist.length > 0) {
+                    playSelectedSong(genrePlaylist[currentSongIndex].Title, genrePlaylist[currentSongIndex].Author, genrePlaylist[currentSongIndex].filename);
+                } else {
+                    console.error("Nincs elérhető zene a lejátszási listán.");
                 }
             }
 
