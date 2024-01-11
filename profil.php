@@ -98,8 +98,19 @@
             <aside class="aside section-1">
                 <div class="subscription-info">
                     <div class="subscription-details">
-                        <p>Megvásárolt előfizetés: Prémium</p>
-                        <p>Előfizetve: 6 hónapja</p>
+                        <p>Megvásárolt előfizetés: <?php 
+                            require "database.php";
+                            $sql = "SELECT subscription_types.Name FROM users INNER JOIN subscriptions ON users.subscription = subscriptions.ID INNER JOIN subscription_types ON subscriptions.Type = subscription_types.ID WHERE users.Email = '".$_SESSION['Email']."'";
+                            $result = $conn->query($sql);
+                            if ($result->num_rows > 0) {
+                            // output data of each row
+                                while($row = $result->fetch_assoc()) {
+                                    echo $row['Name'];
+                                }
+                                $conn->close();
+                            }
+                            $conn->close();
+                        ?></p>
                     </div>
                     <a href="subscription.html">Feliratkozás</a>
                 </div>
