@@ -164,7 +164,7 @@
                     <div class="card">
                         <figure>
                             <a href="#" onclick="playRandomPlaylist()">
-                                <img src="images/End Game.jpg" alt=""> 
+                                <img src="images/Randomplaylist.jpg" alt=""> 
                                 <div><i class="fa-solid fa-circle-play" onclick="handleCirclePlay(this)"></i></div>
                             </a>
                             <figcaption class="song-info">
