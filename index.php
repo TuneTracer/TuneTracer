@@ -98,7 +98,7 @@
                                 <div class="content-left">
                                     <div style="margin-right: 4px;"><h2><?php echo $index + 1; ?></h2></div>
                                     <div class="coverer">
-                                        <img class="small-img inline-block" src="<?php echo $song['cover_art_path']; ?>" alt="">
+                                        <img class="small-img inline-block" src="https://raw.githubusercontent.com/TuneTracer/TuneTracer/main/images/music/<?php if($song['cover_art_path'] != ""){echo $song['cover_art_path'];}else{echo "placeholder.png";} ?>" alt=<?php if($song['cover_art_path'] != ""){echo $song['cover_art_path'];}else{echo "placeholder.png";} ?>">
                                     </div>
                                     <div class="soronzenek">
                                         <div><?php echo $song['Title']; ?></div>
@@ -512,7 +512,8 @@
 
                 var isPlaying = !audioPlayer.paused;
 
-                var musicFolderPath = 'music/';
+                //var musicFolderPath = 'music/';
+                var musicFolderPath = 'https://media.githubusercontent.com/media/TuneTracer/TuneTracer/main/music/';
                 var musicUrl = musicFolderPath + filename;
                 audioPlayer.src = musicUrl;
 
