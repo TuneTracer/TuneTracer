@@ -120,10 +120,10 @@
                 <h1 class="heading-text">Podcastok</h1>
                 <section class="container">
                     <div class="box">
-                        <img src="images/1.jpg" alt="Banner-1">
+                        <a href="https://youtu.be/B4w6yc9Lup0"><img src="images/1.jpg" alt="TheVR Podcast"></a>
                     </div>
                     <div class="box" style="z-index: 1;">
-                        <img src="images/2.jpg" alt="Banner-3">
+                        <a href="https://youtu.be/_foUdRPuUlY"><img src="images/2.jpg" alt="Azahriah Podcast"></a>
                     </div>
                 </section>
 
