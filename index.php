@@ -67,7 +67,7 @@
                             die("Connection failed: " . $conn->connect_error);
                         }
 
-                        $sql = "SELECT Title, Author, filename, cover_art_file FROM audio";
+                        $sql = "SELECT Title, Author, filename, cover_art_path FROM audio";
                         $result = $conn->query($sql);
 
                         $playlistSongs = array();
@@ -93,7 +93,7 @@
                                     <div style="margin-right: 4px;"><h2><?php echo $index + 1; ?></h2></div>
                                     <div class="coverer">
                                         <!-- Corrected the display of cover_art_file -->
-                                        <img class="small-img inline-block" src="<?php echo $song['cover_art_file']; ?>" alt="">
+                                        <img class="small-img inline-block" src="images/music/<?php echo $song['cover_art_path']; ?>" alt="">
                                     </div>
                                     <div class="soronzenek">
                                         <div><?php echo $song['Title']; ?></div>
