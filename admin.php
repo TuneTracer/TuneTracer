@@ -308,11 +308,11 @@ button{
         {
             echo "<h1>Felhasználó Kezelő Felület</h1>";
               echo "<br><br><table>";
-              echo "<tr> <td>'ID'</td> <td>'Username'</td> <td>'Email'</td> <td>'RealName'</td> <td>'BDay'</td> <td>'Password'</td> <td>'isAdmin'</td> </tr>";
+              echo "<tr> <td>'ID'</td> <td>'Username'</td> <td>'Email'</td> <td>'subscription'</td> <td>'Password'</td> <td>'isAdmin'</td> </tr>";
               while ($row = mysqli_fetch_assoc($result)) 
               {
               echo "<tr>";
-              echo "<td>" . $row["ID"] . "</td><td>" . $row["Username"] . "</td><td>" . $row["Email"] . "</td><td>" . $row["RealName"] . "</td><td>" . $row["BDay"] . "</td><td>" . $row["Password"] . "</td><td>" . $row["isAdmin"] . "</td>";
+              echo "<td>" . $row["ID"] . "</td><td>" . $row["Username"] . "</td><td>" . $row["Email"] . "</td><td>" . $row["subscription"] . "</td><td>" . $row["Password"] . "</td><td>" . $row["isAdmin"] . "</td>";
               echo "</tr>";
               }
               echo "</table>";
