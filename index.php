@@ -50,8 +50,10 @@
             <!-- PlayList side bar -->
 
             <aside class="aside section-2" style="border-right: 5px solid rgb(17, 17, 102); padding: 12px;">
-<h1 class="heading-text inline">Soron következő zenék</h1>
-            <div id="search-results"></div>
+                <h1 class="heading-text inline">Keresett zenék</h1>
+                <div id="search-results">
+                    
+                </div>
                 <h1 class="heading-text inline" onclick="hidePlaylistItem(event)">Soron következő zenék <i class="toggleIcon fa-solid fa-minus" style="margin-top: 2%; float: right; font-size: 26px; cursor: pointer;"></i></h1>
 
                 <?php
@@ -67,7 +69,10 @@
                             die("Connection failed: " . $conn->connect_error);
                         }
 
-                        $sql = "SELECT Title, Author, filename, cover_art_path FROM audio";
+                        $sql = "SELECT audio.Title, artist.Name AS Author, audio.filename, audio.cover_art_path
+                                FROM audio
+                                JOIN artist ON audio.Author = artist.ID";
+
                         $result = $conn->query($sql);
 
                         $playlistSongs = array();
@@ -82,12 +87,13 @@
 
                         return $playlistSongs;
                     }
+
                     $playlistSongs = getPlaylistSongs();
                 ?>
 
                 <div class="playlist">
                     <?php foreach ($playlistSongs as $index => $song) : ?>
-                        <div class="playlist-item" onclick="playSelectedSong('<?php echo $song['Title']; ?>', '<?php echo $song['Author']; ?>', '<?php echo $song['filename']; ?>')">
+                        <div class="playlist-item" onclick="playSelectedSong('<?php echo $song['Title']; ?>', '<?php echo $song['Author']; ?>', '<?php echo $song['filename']; ?>', 'regular')">
                             <div class="playlist-content">
                                 <div class="content-left">
                                     <div style="margin-right: 4px;"><h2><?php echo $index + 1; ?></h2></div>
@@ -103,12 +109,11 @@
 
                                 <div class="content-right">
                                     <i class="fa-regular fa-heart" onclick="toggleHeart(this)"></i>
-                                </div>                            
+                                </div>
                             </div>
                         </div>
                     <?php endforeach; ?>
                 </div>
-
             </aside>
 
             <aside class="aside section-1">
@@ -221,7 +226,7 @@
                     </div> 
                 </div>    
                 <div class="con-right trans-bg side-margin-4px">
-                    <i class="fa-solid fa-ban" style="cursor: pointer;"></i>
+                    <i class="fa-solid fa-ban" style="cursor: pointer;" onclick="blockCurrentSong()"></i>
                     <i class="fa-regular fa-heart" style="cursor: pointer;" onclick="toggleHeart(this)"></i>
                 </div>
             </div>
@@ -309,7 +314,7 @@
                 }
             }   
 
-            function handlePlay(event) {
+            function handlePlayPause(event) {
                 if (event.classList.contains("fa-play")) {
                     event.classList.remove("fa-play");
                     event.classList.add("fa-pause");
@@ -374,8 +379,10 @@
                 resultList.innerHTML = "";
             }
 
-            document.getElementById("searchbar").addEventListener("keyup", performSearch);
-            document.getElementById("search-button").addEventListener("click", performSearch);
+            document.addEventListener("DOMContentLoaded", function () {
+                document.getElementById("searchbar").addEventListener("keyup", performSearch);
+                document.getElementById("search-button").addEventListener("click", performSearch);              
+            });
 
             function updateList(results) {
                 var resultList = document.getElementById("search-results");
@@ -384,10 +391,18 @@
                 if (results && results.length > 0) {
                     var ul = document.createElement("ul");
                     for (var i = 0; i < results.length; i++) {
-                        var li = document.createElement("li");
-                        li.textContent = results[i].cim + " - " + results[i].szerzo;
-                        ul.appendChild(li);
+                        (function (i) {
+                            var li = document.createElement("li");
+                            li.textContent = results[i].cim + " - " + results[i].szerzo;
+
+                            li.addEventListener("click", function() {
+                                playSelectedSong(results[i].cim, results[i].szerzo, results[i].filenev);
+                            });
+
+                            ul.appendChild(li);
+                        })(i);
                     }
+
                     resultList.appendChild(ul);
                 }
             }
@@ -414,6 +429,89 @@
                 }
             }
 
+            function getBlockedSongs() {
+                var blockedSongs = localStorage.getItem('blockedSongs');
+                blockedSongs = blockedSongs ? JSON.parse(blockedSongs) : [];
+                return blockedSongs;
+            }
+
+            function stopPlayback() {
+                var audioPlayer = document.getElementById('audioPlayer');
+                audioPlayer.pause();
+            }
+
+            function playNextUnblockedTrack() {
+                var nextUnblockedIndex = getNextUnblockedIndex();
+                if (nextUnblockedIndex !== null) {
+                    currentSongIndex = nextUnblockedIndex;
+                    playSelectedSong(playlistSongs[currentSongIndex].Title, playlistSongs[currentSongIndex].Author, playlistSongs[currentSongIndex].filename);
+                } else {
+                    stopPlayback();
+                }
+            }
+
+            function getNextUnblockedIndex() {
+                var currentIndex = currentSongIndex;
+                var blockedSongs = getBlockedSongs();
+
+                while (true) {
+                    currentIndex = (currentIndex + 1) % playlistSongs.length;
+
+                    if (blockedSongs.indexOf(playlistSongs[currentIndex].filename) === -1) {
+                        return currentIndex;
+                    }
+                    if (currentIndex === currentSongIndex) {
+                        return null;
+                    }
+                }
+            }
+
+            function playPreviousTrack() {
+                var previousUnblockedIndex = getPreviousUnblockedIndex();
+                if (previousUnblockedIndex !== null) {
+                    currentSongIndex = previousUnblockedIndex;
+                    playSelectedSong(playlistSongs[currentSongIndex].Title, playlistSongs[currentSongIndex].Author, playlistSongs[currentSongIndex].filename);
+                } else {
+                }
+            }
+
+            function getPreviousUnblockedIndex() {
+                var currentIndex = currentSongIndex;
+                var blockedSongs = getBlockedSongs();
+
+                while (true) {
+                    currentIndex = (currentIndex - 1 + playlistSongs.length) % playlistSongs.length;
+
+                    if (blockedSongs.indexOf(playlistSongs[currentIndex].filename) === -1) {
+                        return currentIndex;
+                    }
+                    if (currentIndex === currentSongIndex) {
+                        return null;
+                    }
+                }
+            }
+
+            function blockCurrentSong() {
+                if (currentSongIndex !== null && currentSongIndex >= 0 && currentSongIndex < playlistSongs.length) {
+                    var blockedSongIndex = currentSongIndex;
+
+                    if (getBlockedSongs(playlistSongs[blockedSongIndex].filename)) {
+                        playNextUnblockedTrack();
+                    } else {
+                        var playlistItems = document.querySelectorAll('.playlist-item');
+                        if (playlistItems[blockedSongIndex]) {
+                            playlistItems[blockedSongIndex].classList.add('blocked-song');
+                        }
+
+                        var blockedSongs = getBlockedSongs();
+                        if (blockedSongs.indexOf(playlistSongs[blockedSongIndex].filename) === -1) {
+                            blockedSongs.push(playlistSongs[blockedSongIndex].filename);
+                            localStorage.setItem('blockedSongs', JSON.stringify(blockedSongs));
+                        }
+                    }
+                }
+            }
+
             function handlePlayPause() {
                 var audioPlayer = document.getElementById('audioPlayer');
                 var playPauseButton = document.getElementById('playPauseButton');
@@ -430,16 +528,38 @@
             }
 
             var currentSongIndex = 0;
-            var playlistSongs = <?php echo json_encode($playlistSongs); ?>;
+            var playlistSongs = <?php
+                $json = json_encode($playlistSongs);
+
+                if ($json === false) {
+                    // Hiba a JSON generálásakor
+                    $jsonError = json_last_error_msg();
+                    echo 'console.error("JSON encoding error: ' . $jsonError . '");';
+                    echo 'var playlistSongs = [];';
+                } else {
+                    echo $json;
+                }
+            ?>;
+
 
             function playPreviousTrack() {
-                if (currentSongIndex > 0) {
-                    currentSongIndex--;
+                if (isShuffleActive) {
+                    currentSongIndex = Math.floor(Math.random() * shuffledPlaylist.length);
+                    playSelectedSong(shuffledPlaylist[currentSongIndex].Title, shuffledPlaylist[currentSongIndex].Author, shuffledPlaylist[currentSongIndex].filename);
                 } else {
-                    currentSongIndex = playlistSongs.length - 1;
+                    if (currentSongIndex > 0) {
+                        currentSongIndex--;
+                    } else {
+                        currentSongIndex = playlistSongs.length - 1;
+                    }
+                    playSelectedSong(playlistSongs[currentSongIndex].Title, playlistSongs[currentSongIndex].Author, playlistSongs[currentSongIndex].filename);
                 }
 
-                playSelectedSong(playlistSongs[currentSongIndex].Title, playlistSongs[currentSongIndex].Author, playlistSongs[currentSongIndex].filename);
+                var audioPlayer = document.getElementById('audioPlayer');
+                var playPauseButton = document.getElementById('playPauseButton');
+                playPauseButton.classList.remove("fa-play");
+                playPauseButton.classList.add("fa-pause");
+                audioPlayer.play();
             }
 
             var playlistSongs = <?php echo json_encode($playlistSongs); ?>;
@@ -481,7 +601,14 @@
                     }
                     playSelectedSong(playlistSongs[currentSongIndex].Title, playlistSongs[currentSongIndex].Author, playlistSongs[currentSongIndex].filename);
                 }
+
+                var audioPlayer = document.getElementById('audioPlayer');
+                var playPauseButton = document.getElementById('playPauseButton');
+                playPauseButton.classList.remove("fa-play");
+                playPauseButton.classList.add("fa-pause");
+                audioPlayer.play();
             }
+
 
             function updateSeekBar() {
                 var audioPlayer = document.getElementById('audioPlayer');
@@ -492,12 +619,15 @@
                 var currentTime = audioPlayer.currentTime;
                 var totalDuration = audioPlayer.duration;
 
-                currentTimeElement.textContent = formatTime(currentTime);
-                totalDurationElement.textContent = formatTime(totalDuration);
+                if (!isNaN(totalDuration)) {
+                    currentTimeElement.textContent = formatTime(currentTime);
+                    totalDurationElement.textContent = formatTime(totalDuration);
 
-                var seekPercentage = (currentTime / totalDuration) * 100;
-                seekSlider.value = seekPercentage;
+                    var seekPercentage = (currentTime / totalDuration) * 100;
+                    seekSlider.value = seekPercentage;
+                }
             }
+
 
             function formatTime(seconds) {
                 var minutes = Math.floor(seconds / 60);
@@ -508,9 +638,14 @@
             }
 
             document.addEventListener("DOMContentLoaded", function () {
-                var volumeSlider = document.getElementById("volumeSlider");
                 var audioPlayer = document.getElementById('audioPlayer');
+                var playPauseButton = document.getElementById('playPauseButton');
 
+                audioPlayer.addEventListener('ended', function () {
+                    playNextTrack(); // Call the function to play the next track
+                });
+
+                var volumeSlider = document.getElementById("volumeSlider");
                 volumeSlider.addEventListener("input", function () {
                     var volume = volumeSlider.value / 100;
                     audioPlayer.volume = volume;
@@ -545,7 +680,17 @@
                 replayButton.addEventListener('click', function () {
                     replayTrack();
                 });
-            });
+            });       
+
+            localStorage.setItem('currentSongIndex', JSON.stringify(currentSongIndex));
+            localStorage.setItem('isShuffleActive', JSON.stringify(isShuffleActive));
+
+            var storedCurrentSongIndex = JSON.parse(localStorage.getItem('currentSongIndex'));
+            var storedIsShuffleActive = JSON.parse(localStorage.getItem('isShuffleActive'));
+
+            currentSongIndex = storedCurrentSongIndex;
+            isShuffleActive = storedIsShuffleActive;
+
         </script>
     </body>
 </html>

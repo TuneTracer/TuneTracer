@@ -11,13 +11,17 @@
     }
 
     $searchQuery = $_POST["query"];
-    $sql = "SELECT * FROM audio WHERE Title LIKE '%$searchQuery%' OR Author LIKE '%$searchQuery%'";
+    $sql = "SELECT audio.Title, artist.Name as Author, audio.filename
+            FROM audio
+            JOIN artist ON audio.Author = artist.ID
+            WHERE audio.Title LIKE '%$searchQuery%' OR artist.Name LIKE '%$searchQuery%'";
+
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
         $resultsArray = array();
-        while($row = $result->fetch_assoc()) {
-                $resultsArray[] = array("cim" => $row["Title"], "szerzo" => $row["Author"]);
+        while ($row = $result->fetch_assoc()) {
+            $resultsArray[] = array("cim" => $row["Title"], "szerzo" => $row["Author"], "filenev" => $row["filename"]);
         }
 
         echo json_encode($resultsArray);
