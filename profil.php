@@ -100,6 +100,7 @@
                     <div class="subscription-details">
                         <p><?php
                             if(isLoggedIn()){
+                                if(!isset($conn)){require "database.php";}
                                 $sql = "SELECT subscription_types.Name FROM users INNER JOIN subscriptions ON users.subscription = subscriptions.ID INNER JOIN subscription_types ON subscriptions.Type = subscription_types.ID WHERE users.Email = '".$_SESSION['email']."'";
                                 $result = $conn->query($sql);
                                 if ($result->num_rows > 0) {
@@ -110,6 +111,7 @@
                                     $conn->close();
                                 }
                                 $conn->close();
+                                echo "Nincs fizetve csomag.";
                             }
                         ?></p>
                     </div>
@@ -307,7 +309,7 @@
             }
 
             var currentSongIndex = 0;
-            //var playlistSongs = <?php //echo json_encode($playlistSongs); ?>;
+            var playlistSongs = <?php echo json_encode($playlistSongs); ?>;
 
             function playPreviousTrack() {
                 if (isShuffleActive) {

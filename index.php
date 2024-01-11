@@ -93,7 +93,7 @@
 
                 <div class="playlist">
                     <?php foreach ($playlistSongs as $index => $song) : ?>
-                        <div class="playlist-item" onclick="playSelectedSong('<?php echo $song['Title']; ?>', '<?php echo $song['Author']; ?>', '<?php echo $song['filename']; ?>', 'regular')">
+                        <div class="playlist-item" onclick="playSelectedSong('<?php echo $song['Title']; ?>', '<?php echo $song['Author']; ?>', '<?php echo $song['filename']; ?>')">
                             <div class="playlist-content">
                                 <div class="content-left">
                                     <div style="margin-right: 4px;"><h2><?php echo $index + 1; ?></h2></div>
@@ -138,7 +138,7 @@
                     <audio id="podcastPlayer" controls style="display: none;"></audio>
                     <?php foreach ($podcasts as $podcast): ?>
                         <div class="box" 
-                            onclick="playPodcast('<?php echo $podcast['nev']; ?>', '<?php echo $podcast['author']; ?>', '<?php echo $podcast['filename']; ?>')">
+                            onclick="playSelectedSong('<?php echo $podcast['nev']; ?>', '<?php echo $podcast['author']; ?>', '<?php echo $podcast['filename']; ?>',true)">
                             <img src="<?php echo $podcast['image']; ?>" alt="">
                             <div class="podcast-info">
                                 <h3><?php echo $podcast['nev']; ?></h3>
@@ -506,7 +506,7 @@
                 }
             }
 
-            function playSelectedSong(title, artist, filename) {
+            function playSelectedSong(title, artist, filename,isPodcast) {
                 var audioPlayer = document.getElementById('audioPlayer');
                 var playPauseButton = document.getElementById('playPauseButton');
 
@@ -514,7 +514,15 @@
 
                 //var musicFolderPath = 'music/';
                 var mediaFolderPath = 'https://github.com/TuneTracer/TuneTracer/raw/main/';
-                var musicFolderPath = mediaFolderPath + 'music/';
+                if(isPodcast === undefined){
+                    var musicFolderPath = mediaFolderPath + 'music/';
+                }else{
+                    if(isPodcast){
+                        var musicFolderPath = mediaFolderPath + 'podacsts/';
+                    }else{
+                        var musicFolderPath = mediaFolderPath + 'music/';
+                    }
+                }
                 var musicUrl = musicFolderPath + filename;
                 audioPlayer.src = musicUrl;
 
