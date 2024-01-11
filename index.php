@@ -428,6 +428,92 @@
                 }
             }
 
+            function isSongBlocked() {
+                var blockedSongs = localStorage.getItem('blockedSongs');
+                blockedSongs = blockedSongs ? JSON.parse(blockedSongs) : [];
+                return blockedSongs;
+            }
+
+            function stopPlayback() {
+                var audioPlayer = document.getElementById('audioPlayer');
+                audioPlayer.pause();
+            }
+
+            function playNextUnblockedTrack() {
+                var nextUnblockedIndex = getNextUnblockedIndex();
+                if (nextUnblockedIndex !== null) {
+                    currentSongIndex = nextUnblockedIndex;
+                    playSelectedSong(playlistSongs[currentSongIndex].Title, playlistSongs[currentSongIndex].Author, playlistSongs[currentSongIndex].filename);
+                } else {
+                    stopPlayback();
+                }
+            }
+
+            function getNextUnblockedIndex() {
+                var currentIndex = currentSongIndex;
+                var blockedSongs = isSongBlocked();
+
+                while (true) {
+                    currentIndex = (currentIndex + 1) % playlistSongs.length;
+
+                    if (blockedSongs.indexOf(playlistSongs[currentIndex].filename) === -1) {
+                        return currentIndex;
+                    }
+                    if (currentIndex === currentSongIndex) {
+                        return null;
+                    }
+                }
+            }
+
+            function playPreviousTrack() {
+                var previousUnblockedIndex = getPreviousUnblockedIndex();
+                if (previousUnblockedIndex !== null) {
+                    currentSongIndex = previousUnblockedIndex;
+                    playSelectedSong(playlistSongs[currentSongIndex].Title, playlistSongs[currentSongIndex].Author, playlistSongs[currentSongIndex].filename);
+                } else {
+                    stopPlayback();
+                }
+            }
+
+            function getPreviousUnblockedIndex() {
+                var currentIndex = currentSongIndex;
+                var blockedSongs = getBlockedSongs();
+
+                while (true) {
+                    currentIndex = (currentIndex - 1 + playlistSongs.length) % playlistSongs.length;
+
+                    if (blockedSongs.indexOf(playlistSongs[currentIndex].filename) === -1) {
+                        return currentIndex;
+                    }
+                    if (currentIndex === currentSongIndex) {
+                        return null;
+                    }
+                }
+            }
+
+            function blockCurrentSong() {
+                if (currentSongIndex !== null && currentSongIndex >= 0 && currentSongIndex < playlistSongs.length) {
+                    var blockedSongIndex = currentSongIndex;
+
+                    if (isSongBlocked().indexOf(playlistSongs[blockedSongIndex].filename) !== -1) {
+                        playNextUnblockedTrack();
+                    } else {
+                        var playlistItems = document.querySelectorAll('.playlist-item');
+                        if (playlistItems[blockedSongIndex]) {
+                            playlistItems[blockedSongIndex].classList.add('blocked-song');
+                        }
+
+                        var blockedSongs = localStorage.getItem('blockedSongs');
+                        blockedSongs = blockedSongs ? JSON.parse(blockedSongs) : [];
+
+                        if (blockedSongs.indexOf(playlistSongs[blockedSongIndex].filename) === -1) {
+                            blockedSongs.push(playlistSongs[blockedSongIndex].filename);
+                            localStorage.setItem('blockedSongs', JSON.stringify(blockedSongs));
+                        }
+                    }
+                }
+            }
+
             function handlePlayPause() {
                 var audioPlayer = document.getElementById('audioPlayer');
                 var playPauseButton = document.getElementById('playPauseButton');
