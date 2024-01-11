@@ -235,7 +235,7 @@
                 </section>
 
                 <!-- Popular Artists -->
-                <section class="popular-artists">
+                <!-- <section class="popular-artists">
                     <h1 class="heading-text">Népszerű előadók</h1>
                     <div class="popular-artist-content">
                         <figure>
@@ -246,11 +246,11 @@
                         </figure>            
                     </div>
 
-                </section>
+                </section>-->
 
                  <!-- Music Station -->
 
-                 <section class="music-station">
+                 <!-- <section class="music-station">
                      <figure id="mus-sta-fig">
                          <img src="images/music-station.jpg">
                      </figure>
@@ -262,11 +262,11 @@
                         <figure><a href="#"><img src="images/rock.jpg" alt=""><p>Rock</p></a></figure>
                         <figure><a href="#"><img src="images/pop.jpg" alt=""><p>Pop</p></a></figure>
                      </div>
-                 </section>
+                 </section>-->
 
                 <!-- Latest English -->
 
-                <section class="latest-songs" id="latest-english">
+                <!-- <section class="latest-songs" id="latest-english">
                     <h1 class="heading-text">Legfrissebb Magyar</h1>
                     <div class="latest-song-div">      
                         <figure>
@@ -280,19 +280,19 @@
                         </figure>       
                     </div>
 
-                </section>
+                </section>-->
 
                 <!-- Latest Hungarian -->
 
-                <section class="latest-songs" id="latest-hungarian">
-                    <h1 class="heading-text">Legfrissebb Magyar</h1>
-                    <div class="latest-song-div">
-                        <figure>
-                            <a href="#">
-                                <img src="images/3korty.jpg" alt="">
-                                <figcaption class="">
-                                    <h5>3korty</h5>
-                                    <h6>AUG 2, 2023</h6>
+                <section class="latest-songs" id="latest-hungarian"  style="display: none;">
+                    <h1 class="heading-text"  style="display: none;">Legfrissebb Magyar</h1>
+                    <div class="latest-song-div"  style="display: none;">
+                        <figure  style="display: none;">
+                            <a href="#"  style="display: none;">
+                                <img src="images/3korty.jpg" alt=""  style="display: none;">
+                                <figcaption class=""  style="display: none;">
+                                    <h5 style="display: none;">3korty</h5>
+                                    <h6  style="display: none;">AUG 2, 2023</h6>
                                 </figcaption>
                             </a>
                         </figure>
