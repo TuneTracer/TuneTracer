@@ -98,8 +98,7 @@
                                 <div class="content-left">
                                     <div style="margin-right: 4px;"><h2><?php echo $index + 1; ?></h2></div>
                                     <div class="coverer">
-                                        <!-- Corrected the display of cover_art_file -->
-                                        <img class="small-img inline-block" src="images/music/<?php echo $song['cover_art_path']; ?>" alt="">
+                                        <img class="small-img inline-block" src="<?php echo $song['cover_art_path']; ?>" alt="">
                                     </div>
                                     <div class="soronzenek">
                                         <div><?php echo $song['Title']; ?></div>
@@ -128,21 +127,89 @@
                     </div>
                 </section>
 
+                <?php
+                    $servername = "tunetracer.hu";
+                    $username = "tunetracer";
+                    $password = "tunetracer123321";
+                    $dbname = "tunetracer";
+
+                    $conn = new mysqli($servername, $username, $password, $dbname);
+
+                    if ($conn->connect_error) {
+                        die("Connection failed: " . $conn->connect_error);
+                    }
+
+                    $sql = "SELECT audio.Title, artist.Name AS Author, audio.filename, audio.cover_art_path
+                            FROM audio
+                            JOIN artist ON audio.Author = artist.ID
+                            ORDER BY RAND()
+                            LIMIT 30";
+
+                    $result = $conn->query($sql);
+
+                    $randomPlaylist = array();
+
+                    if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            $randomPlaylist[] = $row;
+                        }
+                    }
+                    // Pop Playlist
+                    $popPlaylistQuery = "SELECT * FROM audio WHERE genre = 1 ORDER BY RAND() LIMIT 30";
+                    $popPlaylistResult = $conn->query($popPlaylistQuery);
+                    $popPlaylist = $popPlaylistResult->fetch_all(MYSQLI_ASSOC);
+
+                    // Rock Playlist
+                    $rockPlaylistQuery = "SELECT * FROM audio WHERE genre = 2 ORDER BY RAND() LIMIT 30";
+                    $rockPlaylistResult = $conn->query($rockPlaylistQuery);
+                    $rockPlaylist = $rockPlaylistResult->fetch_all(MYSQLI_ASSOC);
+
+                    $conn->close();
+                ?>          
+
                 <!-- Playlists -->
                 <h1 class="heading-text" style="margin-top: 60px;">Lejátszási Listák</h1>
                 <section class="latest-releases">
+                    <!-- Random Playlist -->
                     <div class="card">
                         <figure>
-                            <a href="#">
-                                <img src="images/End Game.jpg" alt=""> 
+                            <a href="#" onclick="playRandomPlaylist()">
+                                <img src="images/Randomplaylist.jpg" alt=""> 
                                 <div><i class="fa-solid fa-circle-play" onclick="handleCirclePlay(this)"></i></div>
                             </a>
                             <figcaption class="song-info">
-                                <h2>End Game <p>44 zene</p></h2>
+                                <h2>Random Playlist <p><?php echo count($randomPlaylist); ?> zene</p></h2>
                                 <div class="heartIcon"><i class="fa-regular fa-heart" onclick="toggleHeart(this)"></i></div>
                             </figcaption>
-                         </figure>
+                        </figure>
                     </div>
+
+                    <!-- PoP Playlist -->
+                    <div class="card">
+                        <figure>
+                            <a href="#" onclick="playGenrePlaylist(1)">
+                                <img src="images/popplaylist.jpg" alt=""> 
+                                <div><i class="fa-solid fa-circle-play" onclick="handleCirclePlay(this)"></i></div>
+                            </a>
+                            <figcaption class="song-info">
+                                <h2>Pop Playlist <p><?php echo count($popPlaylist); ?> zene</p></h2>
+                                <div class="heartIcon"><i class="fa-regular fa-heart" onclick="toggleHeart(this)"></i></div>
+                            </figcaption>
+                        </figure>
+                    </div>
+
+                    <!-- Rock Playlist -->
+                    <div class="card">
+                        <figure>
+                            <a href="#" onclick="playGenrePlaylist(2)">
+                                <img src="images/Rockplaylist.jpg" alt=""> 
+                                <div><i class="fa-solid fa-circle-play" onclick="handleCirclePlay(this)"></i></div>
+                            </a>
+                            <figcaption class="song-info">
+                                <h2>Rock Playlist <p><?php echo count($rockPlaylist); ?> zene</p></h2>
+                                <div class="heartIcon"><i class="fa-regular fa-heart" onclick="toggleHeart(this)"></i></div>
+                            </figcaption>
+                        </figure>
                     </div>
                 </section>
 
@@ -324,13 +391,24 @@
                 }
             }
 
-            function handleCirclePlay(event) {
-                if (event.classList.contains("fa-circle-play")) {
-                    event.classList.remove("fa-circle-play");
-                    event.classList.add("fa-circle-pause");
+            function handleCirclePlay(element) {
+                var audioPlayer = document.getElementById('audioPlayer');
+                var playPauseButton = document.getElementById('playPauseButton');
+
+                if (audioPlayer.paused) {
+                    playRandomPlaylist();
+
+                    element.classList.remove("fa-circle-play");
+                    element.classList.add("fa-circle-pause");
+                    playPauseButton.classList.remove("fa-play");
+                    playPauseButton.classList.add("fa-pause");
+                    audioPlayer.play();
                 } else {
-                    event.classList.remove("fa-circle-pause");
-                    event.classList.add("fa-circle-play");
+                    playPauseButton.classList.remove("fa-pause");
+                    playPauseButton.classList.add("fa-play");
+                    audioPlayer.pause();
+                    element.classList.remove("fa-circle-pause");
+                    element.classList.add("fa-circle-play");
                 }
             }
 
@@ -413,7 +491,8 @@
 
                 var isPlaying = !audioPlayer.paused;
 
-                var musicFolderPath = 'music/';
+                //var musicFolderPath = 'music/';
+                var musicFolderPath = 'https://media.githubusercontent.com/media/TuneTracer/TuneTracer/main/music/';
                 var musicUrl = musicFolderPath + filename;
                 audioPlayer.src = musicUrl;
 
@@ -681,6 +760,44 @@
                     replayTrack();
                 });
             });       
+
+            function playRandomPlaylist() {
+                var audioPlayer = document.getElementById('audioPlayer');
+                var playPauseButton = document.getElementById('playPauseButton');
+                var currentSongIndex = 0;
+                var randomPlaylist = <?php echo json_encode($randomPlaylist); ?>;
+
+                if (randomPlaylist.length > 0) {
+                    playSelectedSong(randomPlaylist[currentSongIndex].Title, randomPlaylist[currentSongIndex].Author, randomPlaylist[currentSongIndex].filename);
+                } else {
+                    console.error("Nincs elérhető zene a véletlenszerű lejátszási listán.");
+                }
+            }
+
+            function playGenrePlaylist(genre) {
+                var audioPlayer = document.getElementById('audioPlayer');
+                var playPauseButton = document.getElementById('playPauseButton');
+                var currentSongIndex = 0;
+                var genrePlaylist;
+
+                switch (genre) {
+                    case 1:
+                        genrePlaylist = <?php echo json_encode($popPlaylist); ?>;
+                        break;
+                    case 2:
+                        genrePlaylist = <?php echo json_encode($rockPlaylist); ?>;
+                        break;
+                    default:
+                        console.error("Ismeretlen műfaj.");
+                        return;
+                }
+
+                if (genrePlaylist.length > 0) {
+                    playSelectedSong(genrePlaylist[currentSongIndex].Title, genrePlaylist[currentSongIndex].Author, genrePlaylist[currentSongIndex].filename);
+                } else {
+                    console.error("Nincs elérhető zene a lejátszási listán.");
+                }
+            }
 
             localStorage.setItem('currentSongIndex', JSON.stringify(currentSongIndex));
             localStorage.setItem('isShuffleActive', JSON.stringify(isShuffleActive));
