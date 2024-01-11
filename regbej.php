@@ -14,7 +14,7 @@
 <body>
       <!-- Bejelentkezés és Regisztráció -->
     <div class="wrapper">
-      <a href="index.html"><span class="icon-close"><ion-icon name="close"></ion-icon></span></a>
+      <a href="index.php"><span class="icon-close"><ion-icon name="close"></ion-icon></span></a>
 
       <div class="form-box login">
             <h2>Bejelentkezés</h2>

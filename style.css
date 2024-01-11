@@ -328,7 +328,6 @@ main{
     transition: all ease-in-out 0.5s;
 }
 
-
 /* Latest Releases */
 
 .latest-releases {
@@ -593,6 +592,29 @@ main{
     overflow: scroll;
 }
 
+#search-results {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+    padding: 16px;
+}
+
+#search-results ul {
+    list-style: none;
+    padding: 0;
+}
+
+#search-results li {
+    cursor: pointer;
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+    width: 220px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 /* PlayList Section  */
 
 .playlist{
@@ -694,6 +716,19 @@ footer {
 
 .con-right i {
     background: transparent;
+}
+
+.soronzenek {
+    margin-left: 10px;
+    width: 120px;
+    height: 50px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.coverer {
+    margin-left: 10px;
 }
 
 /* Player Controls */
