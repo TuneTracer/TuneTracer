@@ -822,7 +822,7 @@
 
             function playPodcast(title, author, filename) {
                 var podcastPlayer = document.getElementById('podcastPlayer');
-                var podcastFolderPath = 'podcasts/';
+                var podcastFolderPath = 'https://media.githubusercontent.com/media/TuneTracer/TuneTracer/main/podacsts/';
                 var podcastUrl = podcastFolderPath + filename;
                 podcastPlayer.src = podcastUrl;
 
