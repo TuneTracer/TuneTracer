@@ -117,14 +117,35 @@
 
             <aside class="aside section-1">
                 <!-- Podcast Section -->
+                <?php
+                    $podcasts = array(
+                        array(
+                            'nev' => 'thevrpodcast',
+                            'author' => 'TheVR',
+                            'filename' => 'thevrpodcast.mp3',
+                            'image' => 'images/1.jpg'
+                        ),
+                        array(
+                            'nev' => 'azipodcast',
+                            'author' => 'Fiderikusz Sándor',
+                            'filename' => 'azipodcast.mp3',
+                            'image' => 'images/2.jpg'
+                        ),
+                    );
+                ?>
                 <h1 class="heading-text">Podcastok</h1>
                 <section class="container">
-                    <div class="box">
-                        <img src="images/1.jpg" alt="Banner-1">
-                    </div>
-                    <div class="box" style="z-index: 1;">
-                        <img src="images/2.jpg" alt="Banner-3">
-                    </div>
+                    <audio id="podcastPlayer" controls style="display: none;"></audio>
+                    <?php foreach ($podcasts as $podcast): ?>
+                        <div class="box" 
+                            onclick="playPodcast('<?php echo $podcast['nev']; ?>', '<?php echo $podcast['author']; ?>', '<?php echo $podcast['filename']; ?>')">
+                            <img src="<?php echo $podcast['image']; ?>" alt="">
+                            <div class="podcast-info">
+                                <h3><?php echo $podcast['nev']; ?></h3>
+                                <p><?php echo $podcast['author']; ?></p>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
                 </section>
 
                 <?php
@@ -797,6 +818,21 @@
                 } else {
                     console.error("Nincs elérhető zene a lejátszási listán.");
                 }
+            }
+
+            function playPodcast(title, author, filename) {
+                var podcastPlayer = document.getElementById('podcastPlayer');
+                var podcastFolderPath = 'podcasts/';
+                var podcastUrl = podcastFolderPath + filename;
+                podcastPlayer.src = podcastUrl;
+
+                var podcastInfo = document.createElement('div');
+                podcastInfo.innerHTML = '<div class="font-mid trans-bg">' + title + '</div><p class="trans-bg">' + author + '</p>';
+                document.querySelector('.footer-img').innerHTML = podcastInfo.innerHTML;
+
+                podcastPlayer.play().catch(function(error) {
+                    console.error('Error playing the podcast:', error);
+                });
             }
 
             localStorage.setItem('currentSongIndex', JSON.stringify(currentSongIndex));
