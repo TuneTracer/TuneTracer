@@ -1,7 +1,7 @@
 <?php 
     session_start();
+    require "validateLogin.php";
     function isLoggedIn(){
-        require "validateLogin.php";
         if(isset($_SESSION['email'])){
             if(isset($_SESSION['pass'])){
                 if(validateLogin($_SESSION['email'],$_SESSION['pass'])){
