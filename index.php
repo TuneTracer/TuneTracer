@@ -69,7 +69,7 @@
                         die("Connection failed: " . $conn->connect_error);
                     }
 
-                    $sql = "SELECT audio.Title, artist.Name, audio.filename, audio.cover_art_file
+                    $sql = "SELECT audio.Title, artist.Name AS Author, audio.filename, audio.cover_art_file
                             FROM audio
                             JOIN artist ON audio.Author = artist.ID";
 
@@ -93,7 +93,7 @@
 
                 <div class="playlist">
                         <?php foreach ($playlistSongs as $index => $song) : ?>
-                            <div class="playlist-item" onclick="playSelectedSong('<?php echo $song['Title']; ?>', '<?php echo $song['Name']; ?>', '<?php echo $song['filename']; ?>', 'regular')">
+                            <div class="playlist-item" onclick="playSelectedSong('<?php echo $song['Title']; ?>', '<?php echo $song['Author']; ?>', '<?php echo $song['filename']; ?>', 'regular')">
                                 <div class="playlist-content">
                                     <div class="content-left">
                                         <div style="margin-right: 4px;"><h2><?php echo $index + 1; ?></h2></div>
@@ -102,7 +102,7 @@
                                         </div>
                                         <div class="soronzenek">
                                             <div><?php echo $song['Title']; ?></div>
-                                            <p><?php echo $song['Name']; ?></p>
+                                            <p><?php echo $song['Author']; ?></p>
                                         </div>
                                     </div>
 
@@ -225,7 +225,7 @@
                     </div> 
                 </div>    
                 <div class="con-right trans-bg side-margin-4px">
-                    <i class="fa-solid fa-ban" style="cursor: pointer;"></i>
+                    <i class="fa-solid fa-ban" style="cursor: pointer;" onclick="blockCurrentSong()"></i>
                     <i class="fa-regular fa-heart" style="cursor: pointer;" onclick="toggleHeart(this)"></i>
                 </div>
             </div>
@@ -313,7 +313,7 @@
                 }
             }   
 
-            function handlePlay(event) {
+            function handlePlayPause(event) {
                 if (event.classList.contains("fa-play")) {
                     event.classList.remove("fa-play");
                     event.classList.add("fa-pause");
@@ -585,6 +585,16 @@
                     replayTrack();
                 });
             });       
+
+            localStorage.setItem('currentSongIndex', JSON.stringify(currentSongIndex));
+            localStorage.setItem('isShuffleActive', JSON.stringify(isShuffleActive));
+
+            var storedCurrentSongIndex = JSON.parse(localStorage.getItem('currentSongIndex'));
+            var storedIsShuffleActive = JSON.parse(localStorage.getItem('isShuffleActive'));
+
+            currentSongIndex = storedCurrentSongIndex;
+            isShuffleActive = storedIsShuffleActive;
+
         </script>
     </body>
 </html>
