@@ -69,7 +69,7 @@
                             die("Connection failed: " . $conn->connect_error);
                         }
 
-                        $sql = "SELECT audio.Title, artist.Name AS Author, audio.filename, audio.cover_art_file
+                        $sql = "SELECT audio.Title, artist.Name AS Author, audio.filename, audio.cover_art_path
                                 FROM audio
                                 JOIN artist ON audio.Author = artist.ID";
 
@@ -98,7 +98,7 @@
                                 <div class="content-left">
                                     <div style="margin-right: 4px;"><h2><?php echo $index + 1; ?></h2></div>
                                     <div class="coverer">
-                                        <img class="small-img inline-block" src="<?php echo $song['cover_art_file']; ?>" alt="">
+                                        <img class="small-img inline-block" src="<?php echo $song['cover_art_path']; ?>" alt="">
                                     </div>
                                     <div class="soronzenek">
                                         <div><?php echo $song['Title']; ?></div>
@@ -127,21 +127,51 @@
                     </div>
                 </section>
 
+                <?php
+                    $servername = "tunetracer.hu";
+                    $username = "tunetracer";
+                    $password = "tunetracer123321";
+                    $dbname = "tunetracer";
+
+                    $conn = new mysqli($servername, $username, $password, $dbname);
+
+                    if ($conn->connect_error) {
+                        die("Connection failed: " . $conn->connect_error);
+                    }
+
+                    $sql = "SELECT audio.Title, artist.Name AS Author, audio.filename, audio.cover_art_path
+                            FROM audio
+                            JOIN artist ON audio.Author = artist.ID
+                            ORDER BY RAND()
+                            LIMIT 30";
+
+                    $result = $conn->query($sql);
+
+                    $randomPlaylist = array();
+
+                    if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            $randomPlaylist[] = $row;
+                        }
+                    }
+
+                    $conn->close();
+                ?>
+
                 <!-- Playlists -->
                 <h1 class="heading-text" style="margin-top: 60px;">Lejátszási Listák</h1>
                 <section class="latest-releases">
                     <div class="card">
                         <figure>
-                            <a href="#">
+                            <a href="#" onclick="playRandomPlaylist()">
                                 <img src="images/End Game.jpg" alt=""> 
                                 <div><i class="fa-solid fa-circle-play" onclick="handleCirclePlay(this)"></i></div>
                             </a>
                             <figcaption class="song-info">
-                                <h2>End Game <p>44 zene</p></h2>
+                                <h2>Random Playlist <p><?php echo count($randomPlaylist); ?> zene</p></h2>
                                 <div class="heartIcon"><i class="fa-regular fa-heart" onclick="toggleHeart(this)"></i></div>
                             </figcaption>
-                         </figure>
-                    </div>
+                        </figure>
                     </div>
                 </section>
 
@@ -323,13 +353,24 @@
                 }
             }
 
-            function handleCirclePlay(event) {
-                if (event.classList.contains("fa-circle-play")) {
-                    event.classList.remove("fa-circle-play");
-                    event.classList.add("fa-circle-pause");
+            function handleCirclePlay(element) {
+                var audioPlayer = document.getElementById('audioPlayer');
+                var playPauseButton = document.getElementById('playPauseButton');
+
+                if (audioPlayer.paused) {
+                    playRandomPlaylist();
+
+                    element.classList.remove("fa-circle-play");
+                    element.classList.add("fa-circle-pause");
+                    playPauseButton.classList.remove("fa-play");
+                    playPauseButton.classList.add("fa-pause");
+                    audioPlayer.play();
                 } else {
-                    event.classList.remove("fa-circle-pause");
-                    event.classList.add("fa-circle-play");
+                    playPauseButton.classList.remove("fa-pause");
+                    playPauseButton.classList.add("fa-play");
+                    audioPlayer.pause();
+                    element.classList.remove("fa-circle-pause");
+                    element.classList.add("fa-circle-play");
                 }
             }
 
@@ -680,6 +721,19 @@
                     replayTrack();
                 });
             });       
+
+            function playRandomPlaylist() {
+                var audioPlayer = document.getElementById('audioPlayer');
+                var playPauseButton = document.getElementById('playPauseButton');
+                var currentSongIndex = 0;
+                var randomPlaylist = <?php echo json_encode($randomPlaylist); ?>;
+
+                if (randomPlaylist.length > 0) {
+                    playSelectedSong(randomPlaylist[currentSongIndex].Title, randomPlaylist[currentSongIndex].Author, randomPlaylist[currentSongIndex].filename);
+                } else {
+                    console.error("Nincs elérhető zene a véletlenszerű lejátszási listán.");
+                }
+            }
 
             localStorage.setItem('currentSongIndex', JSON.stringify(currentSongIndex));
             localStorage.setItem('isShuffleActive', JSON.stringify(isShuffleActive));
