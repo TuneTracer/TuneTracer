@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2024. Ápr 09. 18:39
+-- Létrehozás ideje: 2024. Ápr 09. 19:55
 -- Kiszolgáló verziója: 10.4.32-MariaDB
 -- PHP verzió: 8.2.12
 
@@ -64,6 +64,19 @@ CREATE TABLE `audio` (
 -- --------------------------------------------------------
 
 --
+-- Tábla szerkezet ehhez a táblához `kedvelt_dalok`
+--
+
+CREATE TABLE `kedvelt_dalok` (
+  `id` int(11) NOT NULL,
+  `cim` varchar(255) NOT NULL,
+  `szerzo` varchar(255) NOT NULL,
+  `filenev` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Tábla szerkezet ehhez a táblához `playlistnames`
 --
 
@@ -113,6 +126,13 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB AVG_ROW_LENGTH=5461 DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
 --
+-- A tábla adatainak kiíratása `users`
+--
+
+INSERT INTO `users` (`ID`, `Username`, `Email`, `RealName`, `BDay`, `Password`, `isAdmin`) VALUES
+(38, 'casf', 'casf@gm.com', NULL, NULL, '$2y$10$gtQvZjbn8oVhYbtPXPZKQ.gdoedrccJWlPFH8RQ9zm2SlLJ8fTqSO', 0);
+
+--
 -- Indexek a kiírt táblákhoz
 --
 
@@ -135,6 +155,12 @@ ALTER TABLE `artist`
 ALTER TABLE `audio`
   ADD PRIMARY KEY (`ID`),
   ADD KEY `FK_audio_Author` (`Author`);
+
+--
+-- A tábla indexei `kedvelt_dalok`
+--
+ALTER TABLE `kedvelt_dalok`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- A tábla indexei `playlistnames`
@@ -179,10 +205,16 @@ ALTER TABLE `audio`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
+-- AUTO_INCREMENT a táblához `kedvelt_dalok`
+--
+ALTER TABLE `kedvelt_dalok`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT a táblához `users`
 --
 ALTER TABLE `users`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- Megkötések a kiírt táblákhoz
