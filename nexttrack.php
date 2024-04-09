@@ -1,10 +1,5 @@
 <?php
-      $servername = "tunetracer.hu";
-      $username = "tunetracer";
-      $password = "tunetracer123321";
-      $dbname = "tunetracer";
-
-      $conn = new mysqli($servername, $username, $password, $dbname);
+      $conn = new mysqli_connect("localhost", "root", "", "tunetracer");
 
       if ($conn->connect_error) {
       die("Connection failed: " . $conn->connect_error);

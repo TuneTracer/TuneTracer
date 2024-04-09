@@ -1,6 +1,6 @@
 <?php
       try {
-            $conn = mysqli_connect("tunetracer.hu", "tunetracer", "tunetracer123321", "tunetracer");
+            $conn = new mysqli_connect("localhost", "root", "", "tunetracer");
       } catch (Exception $e) {
             echo $e;
             die("Nem sikerült csatlakozni");
